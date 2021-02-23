@@ -1,5 +1,24 @@
 <?php
   include 'DatabaseConfig/DbConfig.php';
+  // Configure timeout to 15 minutes
+$timeout = 900;
+
+// Set the maxlifetime of session
+ini_set( "session.gc_maxlifetime", $timeout );
+
+// Also set the session cookie timeout
+ini_set( "session.cookie_lifetime", $timeout );
+
+// Now start the session 
+session_start();
+
+// Update the timeout of session cookie
+$sessionName = session_name();
+
+if( isset( $_COOKIE[ $sessionName ] ) ) {
+
+	setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
+}
 ?>
 <html>
     <head>
@@ -18,6 +37,8 @@
   <link href="css/login.css" rel="stylesheet">
     </head>
     <body>
+        
+
       <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
 
         <div class="container">
@@ -55,9 +76,8 @@
                               <small><strong>Error!</strong> Wrong account or password.</small>
                               <button type="button" class="close" data-dismiss="alert">&times;</button>
                             </div>';
-                        
+                            
                           }
-                         
                         }
                       ?>
                       <input name="submit" type="submit" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
@@ -92,7 +112,7 @@
           if (!$row = $result->fetch_assoc()) {
             //echo '<script>alert("Username or Password is incorrect")</script>';
           } else {
-              session_start();
+        
             $_SESSION['id'] = $row['username'];
 
             if($row['role_id'] == '1' || $row['role_id'] == '2' || $row['role_id'] == '3' || $row['role_id'] == '4' || $row['role_id'] == '5') {
