@@ -1,27 +1,13 @@
 <?php
-  include 'DatabaseConfig/DbConfig.php';
-  // Configure timeout to 15 minutes
-$timeout = 900;
-
-// Set the maxlifetime of session
-ini_set( "session.gc_maxlifetime", $timeout );
-
-// Also set the session cookie timeout
-ini_set( "session.cookie_lifetime", $timeout );
-
-// Now start the session 
-session_start();
-
-// Update the timeout of session cookie
-$sessionName = session_name();
-
-if( isset( $_COOKIE[ $sessionName ] ) ) {
-
-	setcookie( $sessionName, $_COOKIE[ $sessionName ], time() + $timeout, '/' );
-}
+    
+  include 'DatabaseConfig/dbConfig.php';  
 ?>
-<html>
-    <head>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -35,38 +21,42 @@ if( isset( $_COOKIE[ $sessionName ] ) ) {
   <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
   <link href="css/login.css" rel="stylesheet">
-    </head>
-    <body>
-      <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
 
-        <div class="container">
-          <div class="card login-card">
-            <div class="row no-gutters">
-              <div class="col-md-5">
-                <img src="images/login.jpg" alt="login" class="login-card-img">
+</head>
+
+<body>
+
+  <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+
+    <div class="container">
+      <div class="card login-card">
+        <div class="row no-gutters">
+          <div class="col-md-5">
+            <img src="img/login.jpg" alt="login" class="login-card-img">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
+              <div class="brand-wrapper">
+                <img src="img/logo.png" alt="logo" class="logo">
               </div>
-              <div class="col-md-7">
-                <div class="card-body">
-                  <div class="brand-wrapper">
-                    <img src="images/logo.png" alt="logo" class="logo">
-                  </div>
-                  <p class="login-card-description">Sign into your account</p>
-                  <form action="#!" method="POST">
-                      <div class="form-group">
+              <p class="login-card-description">Sign into your account</p>
+              <form action="#!" method ="POST">
+                  <div class="form-group">
                         <label  class="sr-only">Username</label>
-                        <input  name="userid"  class="form-control" placeholder="Email address">
+                        <input  name="username"  class="form-control" placeholder="Username">
                       </div>
                       <div class="form-group mb-4">
                         <label for="password" class="sr-only">Password</label>
                         <input type="password" name="password" id="password" class="form-control" placeholder="***********">
                       </div>
+
                       <?php
                           if(isset($_POST['submit'])) {
 
-                          $username = $_POST['userid'];
+                          $username = $_POST['username'];
                           $pass = $_POST['password'];
 
-                          $sql = "SELECT * FROM account WHERE username = '$username' AND password = '$pass'";
+                          $sql = "SELECT * FROM user WHERE username = '$username' AND password = '$pass'";
                           $result = mysqli_query($conn, $sql)  or die("Could not connect database " .mysqli_error($conn));
 
                           if (!$row = $result->fetch_assoc()) {
@@ -78,59 +68,58 @@ if( isset( $_COOKIE[ $sessionName ] ) ) {
                           }
                         }
                       ?>
-                      <input name="submit" type="submit" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
-
-                    </form>
-                    <a href="#!" class="forgot-password-link">Forgot password?</a>
-                    <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p>
-                    <nav class="login-card-footer-nav">
-                      <a href="#!">Terms of use.</a>
-                      <a href="#!">Privacy policy</a>
-                    </nav>
-                </div>
-              </div>
+                   <input name="submit" type="submit" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
+                </form>
+                <a href="#!" class="forgot-password-link">Forgot password?</a>
+                <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p>
+                <nav class="login-card-footer-nav">
+                  <a href="#!">Terms of use.</a>
+                  <a href="#!">Privacy policy</a>
+                </nav>
             </div>
-          </div>   
+          </div>
+        </div>
+      </div>   
 
-      </main>
-      <!-- Bootstrap core JavaScript -->
-      <script src="vendor/jquery/jquery.min.js"></script>
-      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  </main>
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-
-      <?php
+  <?php
         if(isset($_POST['submit'])) {
 
-          $username = $_POST['userid'];
+          $username = $_POST['username'];
           $pass = $_POST['password'];
 
-          $sql = "SELECT * FROM account WHERE username = '$username' AND password = '$pass'";
+          $sql = "SELECT * FROM user WHERE username = '$username' AND password = '$pass'";
           $result = mysqli_query($conn, $sql)  or die("Could not connect database " .mysqli_error($conn));
 
           if (!$row = $result->fetch_assoc()) {
             //echo '<script>alert("Username or Password is incorrect")</script>';
           } else {
+            session_start();
         
             $_SESSION['id'] = $row['username'];
 
-            if($row['role_id'] == '1' || $row['role_id'] == '2' || $row['role_id'] == '3' || $row['role_id'] == '4' || $row['role_id'] == '5') {
+            if($row['user_role'] == 'Admin' || $row['user_role'] == 'Coordinator' || $row['user_role'] == 'Manager' || $row['user_role'] == 'Student' || $row['user_role'] == 'Guest') {
 
-              $_SESSION['role_id'] = $row['role_id'];
+              $_SESSION['user_role'] = $row['user_role'];
 
-              if(isset($_SESSION['role_id'])) {
-                if($_SESSION['role_id'] == '1') {
+              if(isset($_SESSION['user_role'])) {
+                if($_SESSION['user_role'] == 'Admin') {
                   header("Location: AdminHome.php");
                 }
-                else if($_SESSION['role_id'] == '2') {
+                else if($_SESSION['user_role'] == 'Coordinator') {
                   header("Location: CoordinatorHome.php");
                 }
-                else if($_SESSION['role_id'] == '3') {
+                else if($_SESSION['user_role'] == 'Manager') {
+                  header("Location:ManagerHome.php");
+                }
+                else if($_SESSION['user_role'] == 'Student') {
                   header("Location:StudentHome.php");
                 }
-                else if($_SESSION['role_id'] == '4') {
-                  header("Location:StudentHome.php");
-                }
-                else if($_SESSION['role_id'] == '5') {
+                else if($_SESSION['user_role'] == 'Guest') {
                   header("Location:GuestHome.php");
                 }
               }
@@ -141,5 +130,7 @@ if( isset( $_COOKIE[ $sessionName ] ) ) {
           }
         }
       ?>
-    </body>
+
+</body>
+
 </html>
