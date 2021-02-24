@@ -80,10 +80,10 @@ if(isset($_POST['submit'])){
                    echo '<p>There is an error</p>';
                    
                }
-        } elseif(empty ($ImageFile)) {
+        } elseif(empty ($DocuFile)) {
             echo '<p>Please insert a document file</p>';
         } else{
-            echo '<p>The file is not supported</p>';
+            echo '<p>The document is not supported</p>';
         }
         
     if($ImageClear==true&&$DocuClear==true){
