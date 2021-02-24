@@ -18,5 +18,5 @@
  ?>
 <h1><?php echo $user_role," ", $user_name, " here" ?></h1>
 <a href="logout.php">Log out</a>
-
+<a href="Upload.php">Upload</a>
 <?php } ?>

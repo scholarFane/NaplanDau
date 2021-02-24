@@ -101,6 +101,7 @@
             session_start();
         
             $_SESSION['id'] = $row['username'];
+            $_SESSION['uid'] = $row['user_id'];
 
             if($row['user_role'] == 'Admin' || $row['user_role'] == 'Coordinator' || $row['user_role'] == 'Manager' || $row['user_role'] == 'Student' || $row['user_role'] == 'Guest') {
 

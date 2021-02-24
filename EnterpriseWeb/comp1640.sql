@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 --
 -- Cấu trúc bảng cho bảng `comment`
 --
-
+CREATE Database `comp1640`;
 CREATE TABLE `comment` (
   `comment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
