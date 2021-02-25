@@ -1,0 +1,26 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.sidebar {
+    background-color: #F8F9FA;
+    font-size: 1.25rem;
+    height: 80vh;
+}
+
+.content {
+    height: 80vh;
+}
+
+.content-stuff {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.avatar {
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
