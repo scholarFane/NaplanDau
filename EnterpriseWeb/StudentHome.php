@@ -211,7 +211,7 @@ if(isset($_POST['submit'])){
             $sql = "INSERT INTO `post`( `user_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
                     $prep = $conn->prepare($sql);
                     $prep->execute();
-                    header("Location: StudentHome.php?file_upload_sucessful");
+                    echo "<script>window.open('StudentHome.php','_self')</script>";
         }
 }
 ?>
