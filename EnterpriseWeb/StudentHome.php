@@ -162,9 +162,9 @@ if(isset($_POST['submit'])){
         $sqlq->execute();
         echo "<script>window.open('StudentHome.php','_self')</script>";
     }
-    
-       
-    
+    if (empty($_POST['check'])) {
+    $error="Please agree to the term and service";
+}
     echo $error;
 }
 ?>
