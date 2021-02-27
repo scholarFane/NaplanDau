@@ -17,7 +17,13 @@
 		$student_role = $row_student['user_role'];
 		$student_email = $row_student['user_email'];
 		$id = $row_student['user_id'];
-    $student_faculty = $row_student['faculty_id'];
+                $student_faculty = $row_student['faculty_id'];
+                if($student_role!='Student'){
+                        session_start();
+                        session_destroy();
+                        echo "<h1>Restricted area, please go back to the login page</h1>";
+                        echo "<script>window.open('login.php','_self')</script>";
+                }
 	
  ?>
 <!DOCTYPE html>

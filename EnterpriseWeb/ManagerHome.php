@@ -14,6 +14,12 @@
 
 		$user_name = $row_user['username'];
 		$user_role = $row_user['user_role'];
+                if($user_role!='Manager'){
+                        session_start();
+                        session_destroy();
+                        echo "<h1>Restricted area, please go back to the login page</h1>";
+                        echo "<script>window.open('login.php','_self')</script>";
+                }
 	
  ?>
 <h1><?php echo $user_role," ", $user_name, " here" ?></h1>

@@ -16,7 +16,13 @@
 		$coordinator_name = $row_coordinator['username'];
 		$coordinator_role = $row_coordinator['user_role'];
 		$coordinator_email = $row_coordinator['user_email'];
-    $coordinator_faculty = $row_coordinator['faculty_id'];
+                $coordinator_faculty = $row_coordinator['faculty_id'];
+                if($coordinator_role!='Coordinator'){
+                        session_start();
+                        session_destroy();
+                        echo "<h1>Restricted area, please go back to the login page</h1>";
+                        echo "<script>window.open('login.php','_self')</script>";
+                }
 
 	
  ?>
