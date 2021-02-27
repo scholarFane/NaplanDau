@@ -6,11 +6,11 @@
 .sidebar {
     background-color: #F8F9FA;
     font-size: 1.25rem;
-    height: 80vh;
+    min-height: 800px;
 }
 
 .content {
-    height: 80vh;
+    min-height: 800px;
 }
 
 .content-stuff {

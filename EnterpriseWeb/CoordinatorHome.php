@@ -6,15 +6,18 @@
 		echo "<script>window.open('login.php','_self')</script>";
 
 	}else{
-		$user_session = $_SESSION['id'];
+		$coordinator_session = $_SESSION['id'];
 
-		$get_user = "select * from user where username = '$user_session'";
-		$run_user = mysqli_query($conn,$get_user);
-		$row_user = mysqli_fetch_array($run_user);
 
-		$user_name = $row_user['username'];
-		$user_role = $row_user['user_role'];
-		$user_email = $row_user['user_email'];
+		$get_coordinator = "select * from user where username = '$coordinator_session'";
+		$run_coordinator = mysqli_query($conn,$get_coordinator);
+		$row_coordinator = mysqli_fetch_array($run_coordinator);
+
+		$coordinator_name = $row_coordinator['username'];
+		$coordinator_role = $row_coordinator['user_role'];
+		$coordinator_email = $row_coordinator['user_email'];
+    $coordinator_faculty = $row_coordinator['faculty_id'];
+
 	
  ?>
 <!DOCTYPE html>
@@ -58,10 +61,12 @@
     <div class="sidebar">
       <div class="text-center">
         <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
-        <h2><?php echo"Name: ", $user_name ?></h2>
+        <h2><?php echo"Name: ", $coordinator_name ?></h2>
         <div>DOB: 11/1/2011</div>
-        <div><?php echo"Email: ",$user_email ?></div>
+        <div><?php echo"Email: ",$coordinator_email ?></div>
+        <div><?php echo"faculty_id: ",$coordinator_faculty ?></div>
         <div>Phone Number: 923874239</div>
+        <a href="logout.php">Log out</a>
       </div>
     </div>
     <div class="content">
@@ -70,31 +75,30 @@
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
-                    <th>Student's Work Name</th>
-                    <th>Student Name</th>
+                    <th>Student's id</th>
+                    <th>Picture</th>
+                    <th>Document</th>
                     <th>Grade</th>
                     <th>Comment</th>
                 </tr>
             </thead>
             <tbody>
+              <?php
+                $get_post = "select * from post where faculty_id = '$coordinator_faculty' ";
+                $run_post = mysqli_query($conn,$get_post);
+                while($row_post = mysqli_fetch_array($run_post)){
+                  $student_id = $row_post['user_id'];
+                  $post_image = $row_post['post_image'];
+                  $post_file = $row_post['post_file'];
+              ?>
               <tr>
-                <td>tuzwork1</td>
-                <td>Tuz</td>
+                <td><?php echo $student_id ?></td>
+                <td><?php echo $post_image ?></td>
+                <td><?php echo $post_file ?></td>
                 <td>100  <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
                 <td>Great good fine ok <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
               </tr>
-              <tr>
-                <td>tuzwork2</td>
-                <td>Turik</td>
-                <td>100  <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
-                <td>Find Great  Ok Good <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
-              </tr>
-              <tr>
-                <td>tuzwork3</td>
-                <td>Tuboi</td>
-                <td>100  <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
-                <td>Find Great  Ok Good <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
-              </tr>
+              <?php } ?>
             </tbody>
         </table>
       </div>

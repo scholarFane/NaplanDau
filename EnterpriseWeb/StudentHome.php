@@ -7,16 +7,17 @@
 		echo "<script>window.open('login.php','_self')</script>";
 
 	}else{
-		$user_session = $_SESSION['id'];
+		$student_session = $_SESSION['id'];
 
-		$get_user = "select * from user where username = '$user_session'";
-		$run_user = mysqli_query($conn,$get_user);
-		$row_user = mysqli_fetch_array($run_user);
+		$get_student = "select * from user where username = '$student_session'";
+		$run_student = mysqli_query($conn,$get_student);
+		$row_student = mysqli_fetch_array($run_student);
 
-		$user_name = $row_user['username'];
-		$user_role = $row_user['user_role'];
-		$user_email = $row_user['user_email'];
-		$id = $row_user['user_id'];
+		$student_name = $row_student['username'];
+		$student_role = $row_student['user_role'];
+		$student_email = $row_student['user_email'];
+		$id = $row_student['user_id'];
+    $student_faculty = $row_student['faculty_id'];
 	
  ?>
 <!DOCTYPE html>
@@ -60,11 +61,13 @@
     <div class="sidebar">
       <div class="text-center">
         <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
-        <h2><?php echo"Name: ",$user_name ?></h2>
+        <h2><?php echo"Name: ",$student_name ?></h2>
         <div>DOB: 11/1/2011</div>
-        <div><?php echo"Email: ", $user_email ?></div>
+        <div><?php echo"Email: ", $student_email ?></div>
         <div><?php echo $id  ?></div>
+        <div><?php echo"Faculty ID : ", $student_faculty  ?></div>
         <div>Phone Number: 923874239</div>
+        <a href="logout.php">Log out</a>
       </div>
     </div>
     <div class="content">
@@ -150,7 +153,7 @@ if(isset($_POST['submit'])){
         }
         
     if($ImageClear==true&&$DocuClear==true){
-            $sql = "INSERT INTO `post`(`user_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
+            $sql = "INSERT INTO `post`(`user_id`,`faculty_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id','$student_faculty', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
                     $prep = $conn->prepare($sql);
                     $prep->execute();
                     $UploadClear=true;         
@@ -162,9 +165,9 @@ if(isset($_POST['submit'])){
         $sqlq->execute();
         echo "<script>window.open('StudentHome.php','_self')</script>";
     }
-    if (empty($_POST['check'])) {
-    $error="Please agree to the term and service";
-}
+    
+       
+    
     echo $error;
 }
 ?>
