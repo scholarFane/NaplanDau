@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 27, 2021 lúc 09:00 AM
+-- Thời gian đã tạo: Th3 02, 2021 lúc 11:11 AM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 8.0.2
 
@@ -84,7 +84,8 @@ INSERT INTO `notification` (`notification_id`, `name`, `type`, `message`, `statu
 (0, NULL, 'newpost', 'A student have uploaded a new post', 'unread', '2021-02-27 12:38:57'),
 (0, NULL, 'newpost', 'A student have uploaded a new post', 'unread', '2021-02-27 14:10:17'),
 (0, NULL, 'newpost', 'A student have uploaded a new post', 'unread', '2021-02-27 14:25:49'),
-(0, NULL, 'newpost', 'A student have uploaded a new post', 'unread', '2021-02-27 14:31:23');
+(0, NULL, 'newpost', 'A student have uploaded a new post', 'unread', '2021-02-27 14:31:23'),
+(0, NULL, 'newpost', 'A student have uploaded a new post', 'unread', '2021-02-27 15:25:46');
 
 -- --------------------------------------------------------
 
@@ -112,7 +113,8 @@ INSERT INTO `post` (`post_id`, `user_id`, `term_id`, `faculty_id`, `post_image`,
 (36, 4, NULL, 2, '123845307_3694816403917483_7439521681766803848_n.p', 'NotificationSystemInPHP-master.zip', '', '2021-02-27 12:38:57', 0),
 (37, 1, NULL, 1, '123845307_3694816403917483_7439521681766803848_n.p', 'NotificationSystemInPHP-master.zip', '', '2021-02-27 14:10:17', 0),
 (38, 5, NULL, 2, 'MONSTER HUNTER_ WORLD(416251) 9_27_2020 7_05_18 PM', 'student coordinator.rar', '', '2021-02-27 14:25:49', 0),
-(39, 1, NULL, 1, 'Apex Legends 2_8_2021 8_43_31 PM.png', 'student coordinator.rar', '', '2021-02-27 14:31:23', 0);
+(39, 1, NULL, 1, 'Apex Legends 2_8_2021 8_43_31 PM.png', 'student coordinator.rar', '', '2021-02-27 14:31:23', 0),
+(40, 1, NULL, 1, 'Apex Legends 2_10_2021 6_55_57 PM.png', 'MStore (3).rar', '', '2021-02-27 15:25:46', 0);
 
 -- --------------------------------------------------------
 
@@ -212,7 +214,7 @@ ALTER TABLE `faculty`
 -- AUTO_INCREMENT cho bảng `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT cho bảng `term`
