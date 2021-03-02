@@ -127,7 +127,6 @@ if(isset($_POST['submit'])){
                 }
             }else{
                 $error="<p>There is an error</p>";
-                
             }
         } elseif(empty ($ImageFile)){
             $error="<p>Please insert a image file</p>";
