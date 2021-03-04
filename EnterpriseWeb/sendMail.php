@@ -28,7 +28,7 @@ function sendMail($title, $content, $nTo, $mTo){
     $mail->MsgHTML($body);
     $address = $mTo;
     $mail->AddAddress($address, $nTo);
-    $mail->AddReplyTo($address, 'Localhost');
+    $mail->AddReplyTo($mFrom, 'Localhost');
     $mail->SMTPOptions = array(
 
     'ssl' => array(
