@@ -100,7 +100,7 @@
               <tr>
                 <td><?php echo $student_id ?></td>
                 <td><?php echo $post_image ?></td>
-                <td><?php echo $post_file ?></td>
+                <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
                 <td>100  <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
                 <td>Great good fine ok <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
               </tr>

@@ -1,6 +1,6 @@
 <?php 
 	session_start();
-        
+        include ('sendMail.php');
 	include("DatabaseConfig/dbConfig.php");
 
 	if(!isset($_SESSION['id'])){
@@ -24,7 +24,97 @@
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
-	
+        $ImageError="";
+        $FileError="";
+        $AgreeError="";
+
+    if(isset($_POST['submit'])){
+
+    $ImageFile = $_FILES['imageFile']['name'];
+    $DocuFile = $_FILES['documentFile']['name'];
+    // This lines of codes gets the details of the file been uploaded
+    $ImageTempLocation= $_FILES['imageFile']['tmp_name'];
+    $DocuTempLocation = $_FILES['documentFile']['tmp_name'];
+    $ImageSize = $_FILES['imageFile']['size'];
+    $DocuSize = $_FILES['documentFile']['size'];
+    $ImageUploadStatus=$_FILES['imageFile']['error'];
+    $DocutUploadStatus=$_FILES['documentFile']['error'];
+    $ImageNameExpload = explode('.', $ImageFile);
+    $DocuNameExpload = explode('.', $DocuFile);
+    $ImageExt = strtolower(end($ImageNameExpload));
+    $DocuExt = strtolower(end($DocuNameExpload));
+    $ImageClear=false;
+    $DocuClear=false;
+    $UploadClear=false;
+    $AgreeClear=false;
+    // Type of file supported
+    $supportedImgFormat = array('jpg', 'jpeg', 'png');
+    $supportedFileFormat = array('pdf', 'txt', 'docx','doc','zip','rar');
+        if( in_array($ImageExt, $supportedImgFormat)){
+            if($ImageUploadStatus===0){
+                if($ImageSize<50000000){
+                    $realImageFile=$ImageFile;
+                    $ImagePath="img/$realImageFile";
+                    move_uploaded_file($ImageTempLocation, $ImagePath);
+                    $ImageClear=true;
+                    }
+                else{
+                     $ImageError= "<p>The file size is too big</p>";
+                     
+                }
+            }else{
+                $ImageError="<p>There is an error</p>";
+            }
+        } elseif(empty ($ImageFile)){
+            $ImageError="<p>Please insert a image file</p>";
+        }else{
+            $ImageError="<p>The file is not supported</p>";
+        }
+
+        
+    
+    if (in_array($DocuExt, $supportedFileFormat)) {
+            if($DocutUploadStatus===0){
+               if($DocuSize<50000000){
+                    $realDocuFile=$DocuFile;
+                    $DocuPath="img/$realDocuFile";
+                    move_uploaded_file($DocuTempLocation, $DocuPath);
+                    $DocuClear=true;
+                    }  
+                else{
+                    $FileError="<p>The file size is too big</p>";
+                   }      
+               }else{
+                   $FileError="<p>There is an error</p>";
+                   
+               }
+        } elseif(empty ($DocuFile)) {
+            $FileError="<p>Please insert a document file</p>";
+        } else{
+            $FileError="<p>The document is not supported</p>";
+        }
+    if (isset($_POST['check'])) {
+        $AgreeClear=true;
+    } else {
+        $AgreeError="<p>Please agree to the term and service before uploading</p>";
+    } 
+    if($ImageClear==true&&$DocuClear==true&&$AgreeClear==true){
+            $sql = "INSERT INTO `post`(`user_id`,`faculty_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id','$student_faculty', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
+            $prep = $conn->prepare($sql);
+            $prep->execute();                  
+            $UploadClear=true;         
+        }
+    if($UploadClear===true){
+        $title='New post';
+        $message='A student have uploaded a new post';
+        $query ="select * from user where faculty_id = '$student_faculty' and user_role='Coordinator'";
+        $result = mysqli_query($conn,$query);
+        foreach(fetchAll($query) as $i){
+                sendMail($title, $message,$i['username'] ,$i['user_email']);    
+        }
+        
+    }   
+}    
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,100 +172,17 @@
 	        <h2>Submit your work:</h2>
 	        <h5>Submit your image:</h5>
 	        <input type="file" name="imageFile" class="btn btn-outline-primary" id="file">
+                <?php echo $ImageError ?>
 	        <h5>Submit your document:</h5>
 	         <input type="file" name="documentFile" class="btn btn-outline-primary" id="file">
+                 <?php echo $FileError ?>
 	        <div class="form-group form-check">
 	          <label class="form-check-label">
 	            <input class="form-check-input" name="check" type="checkbox"> Agree to the <span style="text-decoration: underline"><a> term and services</a> </span>before uploading your work
-	          </label>
+	          <?php echo $AgreeError ?>
+                  </label>
 	        </div>
-<?php
-if(isset($_POST['submit'])){
 
-    $ImageFile = $_FILES['imageFile']['name'];
-    $DocuFile = $_FILES['documentFile']['name'];
-    // This lines of codes gets the details of the file been uploaded
-    $ImageTempLocation= $_FILES['imageFile']['tmp_name'];
-    $DocuTempLocation = $_FILES['documentFile']['tmp_name'];
-    $ImageSize = $_FILES['imageFile']['size'];
-    $DocuSize = $_FILES['documentFile']['size'];
-    $ImageUploadStatus=$_FILES['imageFile']['error'];
-    $DocutUploadStatus=$_FILES['documentFile']['error'];
-    $ImageNameExpload = explode('.', $ImageFile);
-    $DocuNameExpload = explode('.', $DocuFile);
-    $ImageExt = strtolower(end($ImageNameExpload));
-    $DocuExt = strtolower(end($DocuNameExpload));
-    $error="";
-    $ImageClear=false;
-    $DocuClear=false;
-    $UploadClear=false;
-    
-    // Type of file supported
-    $supportedImgFormat = array('jpg', 'jpeg', 'png');
-    $supportedFileFormat = array('pdf', 'txt', 'docx','doc','zip','rar');
-        if( in_array($ImageExt, $supportedImgFormat)){
-            if($ImageUploadStatus===0){
-                if($ImageSize<50000000){
-                    $realImageFile=$ImageFile;
-                    $ImagePath="img/$realImageFile";
-                    move_uploaded_file($ImageTempLocation, $ImagePath);
-                    $ImageClear=true;
-                    }
-                else{
-                     $error= "<p>The file size is too big</p>";
-                     
-                }
-            }else{
-                $error="<p>There is an error</p>";
-            }
-        } elseif(empty ($ImageFile)){
-            $error="<p>Please insert a image file</p>";
-        }else{
-            $error="<p>The file is not supported</p>";
-        }
-
-        
-    
-    if (in_array($DocuExt, $supportedFileFormat)) {
-            if($DocutUploadStatus===0){
-               if($DocuSize<50000000){
-                    $realDocuFile=$DocuFile;
-                    $DocuPath="img/$realDocuFile";
-                    move_uploaded_file($DocuTempLocation, $DocuPath);
-                    $DocuClear=true;
-                    }  
-                else{
-                    $error="<p>The file size is too big</p>";
-                   }      
-               }else{
-                   $error="<p>There is an error</p>";
-                   
-               }
-        } elseif(empty ($DocuFile)) {
-            $error="<p>Please insert a document file</p>";
-        } else{
-            $error="<p>The document is not supported</p>";
-        }
-        
-    if($ImageClear==true&&$DocuClear==true){
-            $sql = "INSERT INTO `post`(`user_id`,`faculty_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id','$student_faculty', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
-                    $prep = $conn->prepare($sql);
-                    $prep->execute();
-                    $UploadClear=true;         
-        }
-    if($UploadClear===true){
-        $message="A student have uploaded a new post";
-        $query ="INSERT INTO `notification`(`type` ,`message`, `status`, `date`) VALUES ('newpost','$message', 'unread', CURRENT_TIMESTAMP)";
-        $sqlq = $conn->prepare($query);
-        $sqlq->execute();
-        echo "<script>window.open('StudentHome.php','_self')</script>";
-    }
-    
-       
-    
-    echo $error;
-}
-?>
 	        <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Upload your submission</button>
     	</form>
       </div>
