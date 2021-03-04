@@ -112,7 +112,7 @@
         foreach(fetchAll($query) as $i){
                 sendMail($title, $message,$i['username'] ,$i['user_email']);    
         }
-        
+        echo "<script>window.open('StudentHome.php','_self')</script>";
     }   
 }    
  ?>
