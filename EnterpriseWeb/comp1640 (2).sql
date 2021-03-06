@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 02, 2021 lúc 11:11 AM
+-- Thời gian đã tạo: Th3 06, 2021 lúc 10:36 AM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 8.0.2
 
@@ -34,6 +34,18 @@ CREATE TABLE `comment` (
   `comment_content` varchar(50) NOT NULL,
   `time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `comment`
+--
+
+INSERT INTO `comment` (`comment_id`, `user_id`, `post_id`, `comment_content`, `time`) VALUES
+(4, 2, 37, 'aasss', '2021-03-06 15:41:05'),
+(5, 2, 37, '123', '2021-03-06 15:57:44'),
+(6, 2, 37, 'asdfasdf', '2021-03-06 16:00:46'),
+(7, 1, 37, 'a', '2021-03-06 16:15:37'),
+(9, 1, 37, 'hello\r\n', '2021-03-06 16:17:56'),
+(10, 2, 37, 'hello', '2021-03-06 16:18:30');
 
 -- --------------------------------------------------------
 
@@ -112,9 +124,7 @@ CREATE TABLE `post` (
 INSERT INTO `post` (`post_id`, `user_id`, `term_id`, `faculty_id`, `post_image`, `post_file`, `post_content`, `submit_date`, `selected`) VALUES
 (36, 4, NULL, 2, '123845307_3694816403917483_7439521681766803848_n.p', 'NotificationSystemInPHP-master.zip', '', '2021-02-27 12:38:57', 0),
 (37, 1, NULL, 1, '123845307_3694816403917483_7439521681766803848_n.p', 'NotificationSystemInPHP-master.zip', '', '2021-02-27 14:10:17', 0),
-(38, 5, NULL, 2, 'MONSTER HUNTER_ WORLD(416251) 9_27_2020 7_05_18 PM', 'student coordinator.rar', '', '2021-02-27 14:25:49', 0),
-(39, 1, NULL, 1, 'Apex Legends 2_8_2021 8_43_31 PM.png', 'student coordinator.rar', '', '2021-02-27 14:31:23', 0),
-(40, 1, NULL, 1, 'Apex Legends 2_10_2021 6_55_57 PM.png', 'MStore (3).rar', '', '2021-02-27 15:25:46', 0);
+(38, 5, NULL, 2, 'MONSTER HUNTER_ WORLD(416251) 9_27_2020 7_05_18 PM', 'student coordinator.rar', '', '2021-02-27 14:25:49', 0);
 
 -- --------------------------------------------------------
 
@@ -202,7 +212,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `faculty`

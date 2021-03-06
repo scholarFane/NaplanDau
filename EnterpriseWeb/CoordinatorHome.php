@@ -14,6 +14,7 @@
 		$row_coordinator = mysqli_fetch_array($run_coordinator);
 
 		$coordinator_name = $row_coordinator['username'];
+    $coordinator_id = $row_coordinator['user_id'];
 		$coordinator_role = $row_coordinator['user_role'];
 		$coordinator_email = $row_coordinator['user_email'];
                 $coordinator_faculty = $row_coordinator['faculty_id'];
@@ -84,7 +85,6 @@
                     <th>Student's id</th>
                     <th>Picture</th>
                     <th>Document</th>
-                    <th>Grade</th>
                     <th>Comment</th>
                 </tr>
             </thead>
@@ -93,6 +93,7 @@
                 $get_post = "select * from post where faculty_id = '$coordinator_faculty' ";
                 $run_post = mysqli_query($conn,$get_post);
                 while($row_post = mysqli_fetch_array($run_post)){
+                  $post_id = $row_post['post_id'];
                   $student_id = $row_post['user_id'];
                   $post_image = $row_post['post_image'];
                   $post_file = $row_post['post_file'];
@@ -101,10 +102,14 @@
                 <td><?php echo $student_id ?></td>
                 <td><?php echo $post_image ?></td>
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
-                <td>100  <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
-                <td>Great good fine ok <button class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></button></td>
+                <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
               </tr>
               <?php } ?>
+              <?php
+                if(isset($_GET['submit-coordinator'])){
+                  include("submit-coordinator.php");
+                }
+              ?>
             </tbody>
         </table>
       </div>

@@ -11,11 +11,7 @@
 
 .content {
     min-height: 800px;
-}
-
-.content-stuff {
-    margin-top: 20px;
-    margin-left: 20px;
+    margin: 20px;
 }
 
 .avatar {
@@ -23,4 +19,8 @@
     height: 200px;
     margin-top: 20px;
     margin-bottom: 30px;
+}
+
+.cmt-header {
+    font-size: 1.1rem;
 }

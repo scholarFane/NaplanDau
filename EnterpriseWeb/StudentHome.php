@@ -184,6 +184,7 @@
 	        </div>
 
 	        <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Upload your submission</button>
+          <a href="submit-student.php" class="btn btn-outline-primary">View Your Submission</a>
     	</form>
       </div>
     </div>
