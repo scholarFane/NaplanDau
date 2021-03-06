@@ -2,6 +2,24 @@
 	session_start();
         include ('sendMail.php');
 	include("DatabaseConfig/dbConfig.php");
+    define('DBINFO', 'mysql:host=localhost;dbname=comp1640');
+    define('DBUSER','root');
+    define('DBPASS','');
+
+    function fetchAll($query){
+        $con = new PDO(DBINFO, DBUSER, DBPASS);
+        $stmt = $con->query($query);
+        return $stmt->fetchAll();
+    }
+    function performQuery($query){
+        $con = new PDO(DBINFO, DBUSER, DBPASS);
+        $stmt = $con->prepare($query);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 	if(!isset($_SESSION['id'])){
 		echo "<script>window.open('login.php','_self')</script>";
