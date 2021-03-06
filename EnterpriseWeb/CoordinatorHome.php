@@ -85,7 +85,9 @@
                     <th>Student's id</th>
                     <th>Picture</th>
                     <th>Document</th>
+                    <th>Selected for publication</th>
                     <th>Comment</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,12 +99,30 @@
                   $student_id = $row_post['user_id'];
                   $post_image = $row_post['post_image'];
                   $post_file = $row_post['post_file'];
+                  $post_status = $row_post['selected'];
               ?>
               <tr>
                 <td><?php echo $student_id ?></td>
                 <td><?php echo $post_image ?></td>
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
+                <td><?php 
+                        if($post_status=="1"){
+                            echo "Selected for publication";
+                        }else{
+                            echo "Not selected for publication";
+                        }
+                    ?>  
+                </td>
                 <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
+                <td><form action="selectedPost.php" method="POST" onsubmit="return confirmSelected();">
+                    <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
+                    <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Selected</button>
+                    </form>
+                    <form action="unselectPost.php" method="POST" onsubmit="return confirmUnselected();">
+                    <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
+                    <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Unselected</button>
+                    </form>
+                </td>
               </tr>
               <?php } ?>
               <?php
@@ -167,6 +187,24 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+        function confirmSelected() {
+            var r = confirm("Are you sure you would like to select this post for publication ?");
+            if (r) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function confirmUnselected() {
+            var r = confirm("Are you sure you would like to unselect this post for publication ?");
+            if (r) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+   </script>
 
 </body>
 
