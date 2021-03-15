@@ -14,7 +14,7 @@
 		$row_coordinator = mysqli_fetch_array($run_coordinator);
 
 		$coordinator_name = $row_coordinator['username'];
-    $coordinator_id = $row_coordinator['user_id'];
+                $coordinator_id = $row_coordinator['user_id'];
 		$coordinator_role = $row_coordinator['user_role'];
 		$coordinator_email = $row_coordinator['user_email'];
                 $coordinator_faculty = $row_coordinator['faculty_id'];
