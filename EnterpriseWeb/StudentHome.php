@@ -20,7 +20,7 @@
             return false;
         }
     }
-
+    
 	if(!isset($_SESSION['id'])){
 		echo "<script>window.open('login.php','_self')</script>";
 
@@ -45,9 +45,28 @@
         $ImageError="";
         $FileError="";
         $AgreeError="";
-
-    if(isset($_POST['submit'])){
-
+        $msg="";
+        $deadlineMsg="";
+        $get_deadline = "select * from term ";
+        $run_deadline = mysqli_query($conn,$get_deadline);
+    while ($row_deadline = mysqli_fetch_array($run_deadline)){  
+        $term_deadline=$row_deadline['term_deadline'];
+        $term_description=$row_deadline['term_description'];
+    }
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $date_now=date("Y-m-d H:i:s");
+        $now= strtotime($date_now);
+        $deadline= strtotime($term_deadline);
+    
+    $dupcheck = "select * from post where user_id = '$id'";
+    $run_dupcheck = mysqli_query($conn,$dupcheck);
+    if(!$row_dupcheck = mysqli_fetch_array($run_dupcheck)){
+        $IsDup=false;
+    }else{
+        $IsDup=true;
+        $msg="<p>Warning!You have submitted before, any changes you made here will delete your previous submit";
+    }
+if(isset($_POST['submit'])){
     $ImageFile = $_FILES['imageFile']['name'];
     $DocuFile = $_FILES['documentFile']['name'];
     // This lines of codes gets the details of the file been uploaded
@@ -116,11 +135,16 @@
     } else {
         $AgreeError="<p>Please agree to the term and service before uploading</p>";
     } 
-    if($ImageClear==true&&$DocuClear==true&&$AgreeClear==true){
+    if($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==false&&$OnTimeClear==true){//Upload new post within deadline
             $sql = "INSERT INTO `post`(`user_id`,`faculty_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id','$student_faculty', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
             $prep = $conn->prepare($sql);
             $prep->execute();                  
             $UploadClear=true;         
+        }elseif($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==true&&$OnTimeClear==true){//Edit a post within deadline
+            $sql = "UPDATE post SET post_image = '$realImageFile', post_file = '$realDocuFile' , submit_date = CURRENT_TIMESTAMP WHERE user_id = '$id'";
+            $prep = $conn->prepare($sql);
+            $prep->execute();                  
+            $UpdateClear=true;
         }
     if($UploadClear===true){
         $title='New post';
@@ -132,7 +156,7 @@
         }
         echo "<script>window.open('StudentHome.php','_self')</script>";
     }   
-}    
+}
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -187,21 +211,36 @@
     <div class="content">
       <div class="content-stuff">
       	<form id="upload_form" method="post" enctype="multipart/form-data">
+            <?php 
+                 if (($now) < ($deadline)){
+                    $OnTimeClear=true;
+                    
+                 ?>
 	        <h2>Submit your work:</h2>
+                <?php echo $msg; ?>
+                <?php echo "<h5>Deadline is ".$term_deadline."<br> Description:".$term_description."</h5>"; ?>
+                
 	        <h5>Submit your image:</h5>
 	        <input type="file" name="imageFile" class="btn btn-outline-primary" id="file">
-                <?php echo $ImageError ?>
+                <?php echo $ImageError; ?>
 	        <h5>Submit your document:</h5>
 	         <input type="file" name="documentFile" class="btn btn-outline-primary" id="file">
-                 <?php echo $FileError ?>
+                 <?php echo $FileError; ?>
 	        <div class="form-group form-check">
 	          <label class="form-check-label">
 	            <input class="form-check-input" name="check" type="checkbox"> Agree to the <span style="text-decoration: underline"><a> term and services</a> </span>before uploading your work
-	          <?php echo $AgreeError ?>
+	          <?php echo $AgreeError; ?>
                   </label>
 	        </div>
-
+         
 	        <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Upload your submission</button>
+                <?php
+                 }else{
+                    $deadlineMsg="<p>You have missed the deadline</p>";  
+                    $OnTimeClear=false;
+                }
+                    echo $deadlineMsg;
+                 ?>                
           <a href="submit-student.php" class="btn btn-outline-primary">View Your Submission</a>
     	</form>
       </div>
