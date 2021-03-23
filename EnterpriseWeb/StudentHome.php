@@ -221,10 +221,10 @@ if(isset($_POST['submit'])){
                 <?php echo "<h5>Deadline is ".$term_deadline."<br> Description:".$term_description."</h5>"; ?>
                 
 	        <h5>Submit your image:</h5>
-	        <input type="file" name="imageFile" class="btn btn-outline-primary" id="file">
+                <input type="file" name="imageFile" class="btn btn-outline-primary" id="file" accept="image/*">
                 <?php echo $ImageError; ?>
 	        <h5>Submit your document:</h5>
-	         <input type="file" name="documentFile" class="btn btn-outline-primary" id="file">
+	         <input type="file" name="documentFile" class="btn btn-outline-primary" id="file" accept=".pdf,.docx,.doc,.zip,.rar">
                  <?php echo $FileError; ?>
 	        <div class="form-group form-check">
 	          <label class="form-check-label">
