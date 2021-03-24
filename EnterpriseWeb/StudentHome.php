@@ -50,6 +50,7 @@
         $get_deadline = "select * from term ";
         $run_deadline = mysqli_query($conn,$get_deadline);
     while ($row_deadline = mysqli_fetch_array($run_deadline)){  
+        $term_id=$row_deadline['term_id'];
         $term_deadline=$row_deadline['term_deadline'];
         $term_description=$row_deadline['term_description'];
     }
@@ -135,12 +136,12 @@ if(isset($_POST['submit'])){
     } else {
         $AgreeError="<p>Please agree to the term and service before uploading</p>";
     } 
-    if($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==false&&$OnTimeClear==true){//Upload new post within deadline
-            $sql = "INSERT INTO `post`(`user_id`,`faculty_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id','$student_faculty', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
+    if($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==false){//Upload new post within deadline
+            $sql = "INSERT INTO `post`(`user_id`,`term_id`,`faculty_id`, `post_image`,`post_file`, `submit_date`) VALUES ( '$id','$term_id','$student_faculty', '$realImageFile','$realDocuFile', CURRENT_TIMESTAMP)";
             $prep = $conn->prepare($sql);
             $prep->execute();                  
             $UploadClear=true;         
-        }elseif($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==true&&$OnTimeClear==true){//Edit a post within deadline
+        }elseif($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==true){//Edit a post within deadline
             $sql = "UPDATE post SET post_image = '$realImageFile', post_file = '$realDocuFile' , submit_date = CURRENT_TIMESTAMP WHERE user_id = '$id'";
             $prep = $conn->prepare($sql);
             $prep->execute();                  
@@ -148,14 +149,24 @@ if(isset($_POST['submit'])){
         }
     if($UploadClear===true){
         $title='New post';
-        $message='A student have uploaded a new post';
+        $message="Student".$student_name." have uploaded a new post";
         $query ="select * from user where faculty_id = '$student_faculty' and user_role='Coordinator'";
         $result = mysqli_query($conn,$query);
         foreach(fetchAll($query) as $i){
                 sendMail($title, $message,$i['username'] ,$i['user_email']);    
         }
         echo "<script>window.open('StudentHome.php','_self')</script>";
-    }   
+    } 
+    if($UpdateClear===true){
+        $title='New post';
+        $message="Student".$student_name." have updated their post";
+        $query ="select * from user where faculty_id = '$student_faculty' and user_role='Coordinator'";
+        $result = mysqli_query($conn,$query);
+        foreach(fetchAll($query) as $i){
+                sendMail($title, $message,$i['username'] ,$i['user_email']);    
+        }
+        echo "<script>window.open('StudentHome.php','_self')</script>";
+    }
 }
  ?>
 <!DOCTYPE html>
@@ -213,13 +224,12 @@ if(isset($_POST['submit'])){
       	<form id="upload_form" method="post" enctype="multipart/form-data">
             <?php 
                  if (($now) < ($deadline)){
-                    $OnTimeClear=true;
                     
                  ?>
 	        <h2>Submit your work:</h2>
                 <?php echo $msg; ?>
                 <?php echo "<h5>Deadline is ".$term_deadline."<br> Description:".$term_description."</h5>"; ?>
-                
+                <input type="hidden" name="termId" value="<?php echo $term_id ?>" />
 	        <h5>Submit your image:</h5>
                 <input type="file" name="imageFile" class="btn btn-outline-primary" id="file" accept="image/*">
                 <?php echo $ImageError; ?>
@@ -237,7 +247,6 @@ if(isset($_POST['submit'])){
                 <?php
                  }else{
                     $deadlineMsg="<p>You have missed the deadline</p>";  
-                    $OnTimeClear=false;
                 }
                     echo $deadlineMsg;
                  ?>                

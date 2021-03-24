@@ -9,9 +9,9 @@ use PHPMailer\PHPMailer\Exception;
 
 
 function sendMail($title, $content, $nTo, $mTo){
-    $nFrom = 'Localhost';
-    $mFrom = '';  //dia chi email cua ban 
-    $mPass = '';  //mat khau email cua ban
+    $nFrom = 'System';
+    $mFrom = 'tt3044206@gmail.com';  //dia chi email cua ban 
+    $mPass = 'q!@#$5678';  //mat khau email cua ban
     $mail             = new PHPMailer(true);
     $body             = $content;
     $mail->IsSMTP(); 

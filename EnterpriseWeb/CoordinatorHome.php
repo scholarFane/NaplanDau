@@ -1,7 +1,6 @@
 <?php 
 	session_start();
 	include("DatabaseConfig/dbConfig.php");
-
 	if(!isset($_SESSION['id'])){
 		echo "<script>window.open('login.php','_self')</script>";
 
@@ -85,9 +84,9 @@
                     <th>Student's id</th>
                     <th>Picture</th>
                     <th>Document</th>
-                    <th>Selected for publication</th>
+                    <th>Term</th>
                     <th>Comment</th>
-                    <th>Options</th>
+                    <th>For publication</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,6 +95,7 @@
                 $run_post = mysqli_query($conn,$get_post);
                 while($row_post = mysqli_fetch_array($run_post)){
                   $post_id = $row_post['post_id'];
+                  $term_id=$row_post['term_id'];
                   $student_id = $row_post['user_id'];
                   $post_image = $row_post['post_image'];
                   $post_file = $row_post['post_file'];
@@ -103,24 +103,29 @@
               ?>
               <tr>
                 <td><?php echo $student_id ?></td>
-                <td><?php echo $post_image ?></td>
+                <td><?php echo "<img src='img/". $post_image . "' height='160' width='160'>" ?></td>
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
-                <td><?php 
-                        if($post_status=="1"){
-                            echo "Selected for publication";
-                        }else{
-                            echo "Not selected for publication";
-                        }
-                    ?>  
-                </td>
+                <td><?php echo $term_id; ?></td>
                 <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
-                <td><form action="selectedPost.php" method="POST" onsubmit="return confirmSelected();">
-                    <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
-                    <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Selected</button>
+                <td><form id="selected" action="selectedPost.php" method="POST">
+                        <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
+                        <input type="checkbox" name="checkSelected" v onclick="document.getElementById('selected').submit()"
+                          <?php 
+                        if($post_status=="1"){
+                            echo "checked";
+                        }
+                        ?>     
+                        >Selected
                     </form>
-                    <form action="unselectPost.php" method="POST" onsubmit="return confirmUnselected();">
+                    <form id="notselected" action="unselectPost.php" method="POST">
                     <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
-                    <button type="submit" value="submit" name="submit" id="submit" class="btn btn-primary">Unselected</button>
+                    <input type="checkbox" name="checkSelected" v onclick="document.getElementById('notselected').submit()"
+                             <?php 
+                        if($post_status=="0"){
+                            echo "checked";
+                        }
+                        ?>
+                    >Not selected
                     </form>
                 </td>
               </tr>
@@ -187,24 +192,7 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script>
-        function confirmSelected() {
-            var r = confirm("Are you sure you would like to select this post for publication ?");
-            if (r) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        function confirmUnselected() {
-            var r = confirm("Are you sure you would like to unselect this post for publication ?");
-            if (r) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-   </script>
+
 
 </body>
 
