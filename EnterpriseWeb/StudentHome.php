@@ -47,6 +47,7 @@
         $AgreeError="";
         $msg="";
         $deadlineMsg="";
+        $term_deadline="";
         $get_deadline = "select * from term ";
         $run_deadline = mysqli_query($conn,$get_deadline);
     while ($row_deadline = mysqli_fetch_array($run_deadline)){  
@@ -59,7 +60,7 @@
         $now= strtotime($date_now);
         $deadline= strtotime($term_deadline);
     
-    $dupcheck = "select * from post where user_id = '$id'";
+    $dupcheck = "select * from post where user_id = '$id' and term_id=$term_id";
     $run_dupcheck = mysqli_query($conn,$dupcheck);
     if(!$row_dupcheck = mysqli_fetch_array($run_dupcheck)){
         $IsDup=false;

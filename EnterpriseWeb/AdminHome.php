@@ -70,6 +70,7 @@
                 <div>DOB: 11/1/2011</div>
                 <div><?php echo"Email: ",$admin_email ?></div>
                 <div>Phone Number: 923874239</div>
+                <a href="logout.php">Log out</a>
             </div>
         </div>
         <div class="content">

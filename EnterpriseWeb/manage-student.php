@@ -110,9 +110,7 @@
             <div class="content-stuff">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#grade">Student Grade</a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#info">Student Information</a>
                     </li>
@@ -120,81 +118,8 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div id="grade" class="container tab-pane active"><br>
-                        <h2>Mark Submission:</h2>
-                        <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> Submission.txt </a>
-                        <div class="form-group my-2">
-                            <input type="grade" class="form-control" placeholder="Current Grade: 0/100">
-                        </div>
-                        <button type="button" class="btn btn-primary my-1"><i class="fas fa-upload"></i> Upload
-                            Grade</button>
-                        <a href="submit-student.html" class="btn btn-danger my-1 ml-1"><i class="far fa-trash-alt"></i>
-                            Remove
-                            Grade</a>
-                        <hr>
-                        <!-- Comment Section -->
-                        <div class="comment-section">
-                            <h2>Comment Section:</h2>
-                            <div class="form-group">
-                                <textarea class="form-control" placeholder="Leave your comment here..."
-                                    rows="3"></textarea>
-                                <button type="submit" class="btn btn-outline-primary my-2"><i
-                                        class="fa fa-paper-plane"></i>
-                                    Submit</button>
-                                <div class="card">
-                                    <div class="card-header">Recent Comments</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-1"><img src="http://placehold.it/80"
-                                                    class="rounded-circle img-fluid" alt="" /></div>
-                                            <div class="col-11">
-                                                <div class="font-weight-bold cmt-header">16 Tu</div>
-                                                <div>16 Tu on the mic</div>
-                                                <button class="btn btn-primary btn-sm my-2"><i class="fas fa-reply"></i>
-                                                    Reply</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-1"><img src="http://placehold.it/80"
-                                                    class="rounded-circle img-fluid" alt="" /></div>
-                                            <div class="col-11">
-                                                <div class="font-weight-bold cmt-header">Lil Tu</div>
-                                                <div>16 Tu on the mic</div>
-                                                <button class="btn btn-primary btn-sm my-2"><i class="fas fa-reply"></i>
-                                                    Reply</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-1"><img src="http://placehold.it/80"
-                                                    class="rounded-circle img-fluid" alt="" /></div>
-                                            <div class="col-11">
-                                                <div class="font-weight-bold cmt-header">Tuminem</div>
-                                                <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-                                                    hic delectus
-                                                    at minima dignissimos suscipit error exercitationem praesentium,
-                                                    dicta voluptate
-                                                    atque laudantium nobis, sunt nihil sequi! Cupiditate consequuntur
-                                                    debitis
-                                                    aliquam earum veritatis inventore unde.</div>
-                                                <button class="btn btn-primary btn-sm my-2"><i class="fas fa-reply"></i>
-                                                    Reply</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="info" class="container tab-pane fade"><br>
+                    
+                    <div id="info" class="container"><br>
                         <h2>Manage Student Information</h2>
                 <form action="manage-student.php" method ="POST" enctype="multipart/form-data">
                     <input type="hidden" value="<?php echo $user_id; ?>" name="user_id"/>
