@@ -135,6 +135,7 @@
                   include("submit-coordinator.php");
                 }
               ?>
+              
             </tbody>
         </table>
       </div>

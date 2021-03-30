@@ -38,7 +38,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Coordinator Page</title>
+    <title>Student Page</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -51,36 +51,40 @@
 
     <!-- Custom styles for this template -->
     <link href="css/landing-page.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style2.css">
 
 </head>
 
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-light bg-light static-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">Academy</a>
-            <i class="fas fa-user-alt"></i>
-        </div>
-    </nav>
 
     <!-- Content -->
-    <div class="grid-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="text-center">
-                <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
-                <h2>Name: Tuz</h2>
-                <div>DOB: 11/1/2011</div>
-                <div>Email: tuz@email.com</div>
-                <div>Phone Number: 923874239</div>
-            </div>
-        </div>
+    <div class="container">
         <!-- Right Content -->
         <div class="content">
             <div class="content-stuff">
-                <?php
+                <h2>Mark Submission:</h2>
+                <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> Submission.txt </a>
+                <div class="form-group my-2">
+                    <input type="grade" class="form-control" placeholder="Current Grade: 0/100">
+                </div>
+                <button type="button" class="btn btn-primary my-1"><i class="fas fa-upload"></i> Upload
+                    Grade</button>
+                <a href="submit-student.html" class="btn btn-danger my-1 ml-1"><i class="far fa-trash-alt"></i> Remove
+                    Grade</a>
+            </div>
+            <hr>
+            <!-- Comment Section -->
+            <div class="comment-section">
+                <h2>Comment Section:</h2>
+                <div class="form-group">
+                    <form method="post">
+                    <textarea name="comment" class="form-control" placeholder="Leave your comment here..." rows="3"></textarea>
+                    <button type="submit" value="submit" name="submit" id="submit" class="btn btn-outline-primary my-2"><i class="fa fa-paper-plane"></i>
+                        Submit</button>
+                    </form>
+                    <?php
                     if(isset($_GET['submit-coordinator'])){
                         $post_id = $_GET['submit-coordinator'];
                         $get_post = "select * from post where post_id = '$post_id'";
@@ -96,36 +100,18 @@
                         echo"something wrong";
                     } 
                 ?>
-                <h2>Mark Submission:</h2>
-                <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> <?php echo $p_document; ?> </a>
-                <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> <?php echo $coordinator_id; ?> </a>
-                <div class="form-group my-2">
-                    <input type="grade" class="form-control" placeholder="Current Grade: 0/100" >
-                </div>
-                <button type="button" class="btn btn-primary my-1"><i class="fas fa-upload"></i> Upload
-                    Grade</button>
-                <a href="submit-student.html" class="btn btn-danger my-1 ml-1"><i class="far fa-trash-alt"></i> Remove
-                    Grade</a>
-            </div>
-            <hr>
-            <!-- Comment Section -->
-            <div class="comment-section">
-
-                <h2>Comment Section:</h2>
-                <div class="form-group">
-                    <form method="post">
-                        <textarea class="form-control" name="comment" placeholder="Leave your comment here..." rows="3"></textarea>
-                        <button type="submit" value="submit" name="submit" id="submit" class="btn btn-outline-primary my-2"><i class="fa fa-paper-plane"></i>
-                            Submit</button>
-                    </form>
                     <?php 
                         if(isset($_POST['submit'])){
                             $comment = $_POST['comment'];
-                            $insert_comment = "insert into comment (`user_id`, `post_id`, `comment_content`, `time`) values ('$coordinator_id', '$post_id', '$comment', CURRENT_TIMESTAMP)";
-                            mysqli_query($conn,$insert_comment);
+                            
+                            $insert_comment = $conn->prepare("insert into comment (`user_id`, `post_id`, `comment_content`) values ('$coordinator_id', '$post_id', '$comment')");
+                            $insert_comment->bind_param('iis', $coordinator_id, $post_id, $comment );
+                            $insert_comment->execute();
+                            $insert_comment->close();
                         }
                     ?>
                     <div class="card">
+                        
                         <div class="card-header">Recent Comments</div>
                         <?php 
                             $get_comment = "select * from comment where post_id = '$post_id' ";
@@ -133,7 +119,7 @@
                             while($row_comment = mysqli_fetch_array($run_comment)){
                               $user_id = $row_comment['user_id'];
                               $get_user = "select * from user where user_id = '$user_id'";
-                              $run_user = mysqli_query($conn, $get_user);
+                              $run_user = mysqli_query($conn,$get_user);
                               $row_user = mysqli_fetch_array($run_user);
                               $user_name = $row_user['username'];
                               $user_role = $row_user['user_role'];
@@ -152,60 +138,16 @@
                         </div>
                     <?php } ?>
                     </div>
+
+                        
+                        
+                    </div>
                 </div>
-            </div>
 
         </div>
     </div>
     </div>
 
-
-    <!-- Footer -->
-    <footer class="footer bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item">
-                            <a href="#">About</a>
-                        </li>
-                        <li class="list-inline-item"> </li>
-                        <li class="list-inline-item">
-                            <a href="#">Contact</a>
-                        </li>
-                        <li class="list-inline-item"> </li>
-                        <li class="list-inline-item">
-                            <a href="#">Terms of Use</a>
-                        </li>
-                        <li class="list-inline-item"> </li>
-                        <li class="list-inline-item">
-                            <a href="#">Privacy Policy</a>
-                        </li>
-                    </ul>
-                    <p class="text-muted small mb-4 mb-lg-0">&copy; All Rights Reserved.</p>
-                </div>
-                <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item mr-3">
-                            <a href="#">
-                                <i class="fab fa-facebook fa-2x fa-fw"></i>
-                            </a>
-                        </li>
-                        <li class="list-inline-item mr-3">
-                            <a href="#">
-                                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#">
-                                <i class="fab fa-instagram fa-2x fa-fw"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
