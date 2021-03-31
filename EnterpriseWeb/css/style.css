@@ -1,16 +1,38 @@
 .grid-container {
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: 600px;
+    grid-template-areas: 
+    "sidebar content";
+}
+
+@media (max-width: 700px)  {
+    .grid-container {
+        grid-template-areas:
+        "sidebar"
+        "content";
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+    }
+}
+
+.navbar {
+    background-color: #343a40 !important;
+    color: #ffffff;
+}
+
+.navbar-brand {
+    color: #ffffff !important;
 }
 
 .sidebar {
+    grid-area: sidebar;
     background-color: #F8F9FA;
     font-size: 1.25rem;
-    min-height: 800px;
 }
 
 .content {
-    min-height: 800px;
+    grid-area: content;
     margin: 20px;
 }
 

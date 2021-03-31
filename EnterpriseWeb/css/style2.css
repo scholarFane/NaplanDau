@@ -1,0 +1,15 @@
+
+.content {
+    min-height: 800px;
+    margin: 20px;
+}
+
+.avatar {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.cmt-header {
+    font-size: 1.1rem;
+}
+

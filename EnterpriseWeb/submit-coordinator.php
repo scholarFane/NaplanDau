@@ -51,7 +51,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/landing-page.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -103,11 +103,11 @@
                     <?php 
                         if(isset($_POST['submit'])){
                             $comment = $_POST['comment'];
+                            $comment_new = str_replace( array( '\'', '"', ',' , ';', '<', '>' ), ' ', $comment);
+                            $insert_comment = "insert into comment (`user_id`, `post_id`, `comment_content`, `time`) values ('$coordinator_id', '$post_id', '$comment_new', CURRENT_TIMESTAMP)";
+                            mysqli_query($conn,$insert_comment);
+
                             
-                            $insert_comment = $conn->prepare("insert into comment (`user_id`, `post_id`, `comment_content`) values ('$coordinator_id', '$post_id', '$comment')");
-                            $insert_comment->bind_param('iis', $coordinator_id, $post_id, $comment );
-                            $insert_comment->execute();
-                            $insert_comment->close();
                         }
                     ?>
                     <div class="card">
