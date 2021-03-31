@@ -369,7 +369,7 @@
             }
         }
         function confirmDeleteTerm() {
-            var r = confirm("Are you sure you would like to delete this user ?");
+            var r = confirm("Are you sure you would like to delete this term ?");
             if (r) {
                 return true;
             } else {

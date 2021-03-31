@@ -144,7 +144,7 @@ if(isset($_POST['submit'])){
             $prep->execute();                  
             $UploadClear=true;         
         }elseif($ImageClear==true&&$DocuClear==true&&$AgreeClear==true&&$IsDup==true){//Edit a post within deadline
-            $sql = "UPDATE post SET post_image = '$realImageFile', post_file = '$realDocuFile' , submit_date = CURRENT_TIMESTAMP WHERE user_id = '$id'";
+            $sql = "UPDATE post SET post_image = '$realImageFile', post_file = '$realDocuFile' , submit_date = CURRENT_TIMESTAMP WHERE user_id = '$id' and term_id='$term_id'";
             $prep = $conn->prepare($sql);
             $prep->execute();                  
             $UpdateClear=true;

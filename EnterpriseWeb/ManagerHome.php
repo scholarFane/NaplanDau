@@ -20,7 +20,11 @@
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
-	
+if (isset($_POST['selectTerm'])) {
+    $filterTerm=$_POST['termID'];
+    header("Location: ManagerHome.php#stats");
+    die("Term filtered");
+}
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,9 +115,9 @@
 				              ?>
                                 <tr>
                                     <td><?php echo $student_id ?></td>
-					                <td><?php echo "<img src='img/". $post_image . "' height='160' width='160'>" ?></td>
-					                <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
-					                <td><?php echo $term_id; ?></td>
+                                    <td><?php echo "<img src='img/". $post_image . "' height='160' width='160'>" ?></td>
+                                    <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
+                                    <td><?php echo $term_id; ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -121,17 +125,34 @@
                     </div>
                     <!-- Chart-->
                     <div id="stats" class="container tab-pane fade"><br>
-                        <h2>Chart 1</h2>
+                        <h2>Total of post submitted</h2>
                         <div>
+                            <form name="filterTerm" method="POST" action="ManagerHome.php">
+                            <select name="selectTerm" id="selectTerm" onchange="this.form.submit()">
+                                <?php 
+                    $query = "SELECT * FROM term";
+                    $terms = mysqli_query($conn,$query);
+                        while ($term= mysqli_fetch_array($terms)) {
+                        $tId = $term['0'];
+                        echo "<option value='$tId' selected >$tId</option>";
+                    }
+                                ?>
+                            </select>
+                            <input type="hidden" name="termID" value="<?php echo $tId; ?>">  
+                        </form>        
                             <canvas id="chart1"></canvas>
                         </div>
-                        <h2>Chart 2</h2>
+                        <h2>Total of students</h2>
                         <div>
                             <canvas id="chart2"></canvas>
                         </div>
-                        <h2>Chart 3</h2>
+                        <h2>Total of post submitted by each faculty</h2>
                         <div>
                             <canvas id="chart3"></canvas>
+                        </div>
+                        <h2>Total of post selected by each faculty</h2>
+                        <div>
+                            <canvas id="chart4"></canvas>
                         </div>
                     </div>
                 </div>
@@ -143,27 +164,32 @@
     <!-- Just copy more if u u more charts-->
     <script>
     	<?php
-    	$get_users = "select * from user ";
-		$run_users = mysqli_query($conn,$get_users);
-		$row_users = mysqli_fetch_array($run_users);
-
-		$test = "SELECT count(user_id) as total FROM user";
+                $filterTerm=$tId;
+		$test = "SELECT count(post_id) as total FROM post where term_id='$filterTerm'";
 		$result = mysqli_query($conn,$test);
 		$values = mysqli_fetch_assoc($result);
 		$num_rows = $values['total'] ;
+                $selected_num = "SELECT count(post_id) as total FROM post where selected='1' and term_id='$filterTerm'";
+		$selected_result = mysqli_query($conn,$selected_num);
+		$selected = mysqli_fetch_assoc($selected_result);
+		$selected_rows = ($selected['total']/$num_rows)*100 ;
+                $notselected_num = "SELECT count(post_id) as total FROM post where selected='0'and term_id='$filterTerm'";
+		$notselected_result = mysqli_query($conn,$notselected_num);
+		$notselected = mysqli_fetch_assoc($notselected_result);
+		$notselected_rows = ($notselected['total']/$num_rows)*100 ;
     	 ?> 
         // Chart 1
         let chart1 = document.getElementById('chart1').getContext('2d');
-
+        
         let circleChart = new Chart(chart1, {
             type: 'pie', // bar, horizontal
             data: {
-                labels: ['Submitted Students', 'Not Submitted Student'],
+                labels: ['Selected Post', 'Not Selected Post'],
                 datasets: [{
                     label: 'Student Submission Chart',
                     data: [
-                        70,
-                        30
+                        <?php echo $selected_rows; ?>,
+                        <?php echo $notselected_rows; ?>
                     ],
                     backgroundColor: [
                         '#a3ddcb', 
@@ -174,7 +200,7 @@
             options: {
                 title: {
                     display: true,
-                    text: <?php echo $num_rows ?>,
+                    text: '<?php echo $num_rows." posts"; ?>',
                     fontSize: 18
                 },
                 legend: {
@@ -182,30 +208,49 @@
                 }
             }
         })
-
+        <?php 
+                $get_users = "SELECT count(user_id) as total from user where user_role='Student'";
+		$run_users = mysqli_query($conn,$get_users);
+		$row_users = mysqli_fetch_assoc($run_users);
+                $num_users = $row_users['total'] ;
+                $IT_query = "SELECT count(user_id) as total FROM user where faculty_id='1' and user_role='Student'";
+		$IT_result = mysqli_query($conn,$IT_query);
+		$ITstudent = mysqli_fetch_assoc($IT_result);
+		$ITstudent_rows = ($ITstudent['total']/$num_users)*100 ;
+                $Busi_query = "SELECT count(user_id) as total FROM user where faculty_id='2' and user_role='Student'";
+		$Busi_result = mysqli_query($conn,$Busi_query);
+		$BusiStudent = mysqli_fetch_assoc($Busi_result);
+		$BusiStudent_rows = ($BusiStudent['total']/$num_users)*100 ;
+                $Event_query = "SELECT count(user_id) as total FROM user where faculty_id='3' and user_role='Student'";
+		$Event_result = mysqli_query($conn,$Event_query);
+		$EventStudent = mysqli_fetch_assoc($Event_result);
+		$EventStudent_rows = ($EventStudent['total']/$num_users)*100 ;
+        ?>
         // Chart 2
         let chart2 = document.getElementById('chart2').getContext('2d');
 
         let circleChart2 = new Chart(chart2, {
             type: 'pie', // bar, horizontal
             data: {
-                labels: ['Submitted Students', 'Not Submitted Student'],
+                labels: ['IT Students', 'Business Student','Event Student'],
                 datasets: [{
-                    label: 'Student Submission Chart',
+                    label: 'Student Chart',
                     data: [
-                        70,
-                        30
+                        <?php echo $ITstudent_rows; ?>,
+                        <?php echo $BusiStudent_rows; ?>,
+                        <?php echo $EventStudent_rows; ?>
                     ],
                     backgroundColor: [
                         '#a3ddcb', 
-                        '#e5707e'
+                        '#e5707e',
+                        '#fcf695'
                     ]
                 }],
             },
             options: {
                 title: {
                     display: true,
-                    text: 'Chart Title Name',
+                    text: '<?php echo $num_users." students"; ?>',
                     fontSize: 18
                 },
                 legend: {
@@ -213,30 +258,88 @@
                 }
             }
         })
-
-        // Chart 3
+                
+        <?php 
+            $ITpost_query = "SELECT count(post_id) as total FROM post where faculty_id='1' and term_id='$filterTerm'";
+            $ITpost_result = mysqli_query($conn,$ITpost_query);
+            $ITpost = mysqli_fetch_assoc($ITpost_result);
+            $ITpost_rows = ($ITpost['total']/$num_rows)*100 ;
+            $BusiPost_query = "SELECT count(post_id) as total FROM post where faculty_id='2' and term_id='$filterTerm'";
+            $BusiPost_result = mysqli_query($conn,$BusiPost_query);
+            $BusiPost = mysqli_fetch_assoc($BusiPost_result);
+            $BusiPost_rows = ($BusiPost['total']/$num_rows)*100 ;
+            $EventPost_query = "SELECT count(post_id) as total FROM post where faculty_id='3' and term_id='$filterTerm'";
+            $EventPost_result = mysqli_query($conn,$EventPost_query);
+            $EventPost = mysqli_fetch_assoc($EventPost_result);
+            $EventPost_rows = ($EventPost['total']/$num_rows)*100 ;
+        ?>
         let chart3 = document.getElementById('chart3').getContext('2d');
-
         let circleChart3 = new Chart(chart3, {
             type: 'pie', // bar, horizontal
             data: {
-                labels: ['Submitted Students', 'Not Submitted Student'],
+                labels: ['IT Students', 'Business Student','Event Student'],
                 datasets: [{
-                    label: 'Student Submission Chart',
+                    label: 'Post by each faculty Chart',
                     data: [
-                        70,
-                        30
+                        <?php echo $ITpost_rows; ?>,
+                        <?php echo $BusiPost_rows; ?>,
+                        <?php echo $EventPost_rows; ?>            
                     ],
                     backgroundColor: [
                         '#a3ddcb', 
-                        '#e5707e'
+                        '#e5707e',
+                        '#fcf695'
                     ]
                 }],
             },
             options: {
                 title: {
                     display: true,
-                    text: 'Chart Title Name',
+                    text: '<?php echo $num_rows." posts"; ?>',
+                    fontSize: 18
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        })
+        <?php        
+            $ITpostSelected_query = "SELECT count(post_id) as total FROM post where faculty_id='1' and term_id='$filterTerm' and selected='1'";
+            $ITpostSelected_result = mysqli_query($conn,$ITpostSelected_query);
+            $ITpostSelected = mysqli_fetch_assoc($ITpostSelected_result);
+            $ITpostSelected_rows = ($ITpostSelected['total']/$num_rows)*100 ;
+            $BusiPostSelected_query = "SELECT count(post_id) as total FROM post where faculty_id='2' and term_id='$filterTerm'and selected='1'";
+            $BusiPostSelected_result = mysqli_query($conn,$BusiPostSelected_query);
+            $BusiPostSelected = mysqli_fetch_assoc($BusiPostSelected_result);
+            $BusiPostSelected_rows = ($BusiPostSelected['total']/$num_rows)*100 ;
+            $EventPostSelected_query = "SELECT count(post_id) as total FROM post where faculty_id='3' and term_id='$filterTerm'and selected='1' ";
+            $EventPostSelected_result = mysqli_query($conn,$EventPostSelected_query);
+            $EventPostSelected = mysqli_fetch_assoc($EventPostSelected_result);
+            $EventPostSelected_rows = ($EventPostSelected['total']/$num_rows)*100 ;
+        ?>
+        let chart4 = document.getElementById('chart4').getContext('2d');
+        let circleChart4 = new Chart(chart4, {
+            type: 'pie', // bar, horizontal
+            data: {
+                labels: ['IT Students', 'Business Student','Event Student'],
+                datasets: [{
+                    label: 'Post by each faculty Chart',
+                    data: [
+                        <?php echo $ITpostSelected_rows; ?>,
+                        <?php echo $BusiPostSelected_rows; ?>,
+                        <?php echo $EventPostSelected_rows; ?>            
+                    ],
+                    backgroundColor: [
+                        '#a3ddcb', 
+                        '#e5707e',
+                        '#fcf695'
+                    ]
+                }],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '<?php echo $num_rows." posts"; ?>',
                     fontSize: 18
                 },
                 legend: {
