@@ -13,7 +13,7 @@
 		$row_coordinator = mysqli_fetch_array($run_coordinator);
 
 		$coordinator_name = $row_coordinator['username'];
-                $coordinator_id = $row_coordinator['user_id'];
+    $coordinator_id = $row_coordinator['user_id'];
 		$coordinator_role = $row_coordinator['user_role'];
 		$coordinator_email = $row_coordinator['user_email'];
                 $coordinator_faculty = $row_coordinator['faculty_id'];
@@ -75,6 +75,11 @@
         <a href="logout.php">Log out</a>
       </div>
     </div>
+    <?php
+      if(isset($_GET['submit-coordinator'])){
+        include("submit-coordinator.php");
+      }else{
+     ?>
     <div class="content">
       <div class="content-stuff">
         <h2>Student Works:</h2> 
@@ -130,16 +135,12 @@
                 </td>
               </tr>
               <?php } ?>
-              <?php
-                if(isset($_GET['submit-coordinator'])){
-                  include("submit-coordinator.php");
-                }
-              ?>
               
             </tbody>
         </table>
       </div>
     </div>
+  
   </div>
  
 
@@ -189,6 +190,7 @@
       </div>
     </div>
   </footer>
+  <?php } ?>
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -198,5 +200,6 @@
 </body>
 
 </html>
+
 
 <?php } ?>
