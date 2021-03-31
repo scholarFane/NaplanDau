@@ -21,27 +21,26 @@
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
-                
     if (isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
-        //Load the current data to that batch
+            //Load the current data to that batch
         $query = "SELECT * FROM user WHERE user_id = '$user_id'";
         $run_query = mysqli_query($conn, $query);
         $row = mysqli_fetch_array($run_query);
         if ($row) {
-            $faculty_id = $row['faculty_id'];
-            $username = $row['username'];
-            $password = $row['password'];
-            $email=$row['user_email'];
+        $faculty_id = $row['faculty_id'];
+        $username = $row['username'];
+        $password = $row['password'];
+        $email=$row['user_email'];
         
         }
     }
     if(isset($_POST['submit'])) {
         $newUserId=$_POST['user_id'];
-        $newFID=$_POST['faculty'];
         $newUsername = $_POST['username'];
         $newPass = $_POST['password'];
         $newEmail=$_POST['email'];
+        $newFID=$_POST['faculty'];
         $query="select * from user where username = '$newUsername'and user_email='$newEmail' ";
         $checkdup = mysqli_query($conn, $query);
             if (!$nodup = $checkdup->fetch_assoc()) {          
@@ -51,11 +50,13 @@
                 $error = "<br>Can't update user, please try again";
                 } else {
                     $msg = "Upadated $username successfully!";
-                    header("Location:AdminHome.php#student?successfulUpdated");
+                    header("Location:AdminHome.php#guest?successfulUpdated");
                 }
             }
-        }
-	           
+    }
+	
+               
+	
  ?>
 <html lang="en">
 
@@ -107,21 +108,8 @@
         </div>
         <!-- Right Content -->
         <div class="content">
-            <div class="content-stuff">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#info">Student Information</a>
-                    </li>
-                </ul>
-
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    
-                    <div id="info" class="container"><br>
-                        <h2>Manage Student Information</h2>
-                <form action="manage-student.php" method ="POST" enctype="multipart/form-data">
+            <h2>Manage Guest Information</h2>
+            <form action="manage-manager.php" method ="POST" enctype="multipart/form-data">
                     <input type="hidden" value="<?php echo $user_id; ?>" name="user_id"/>
                 <div class="form-group">
                     <label for="name">Username:</label>
@@ -156,10 +144,7 @@
                    <div><?php echo $msg; ?></div>
                 <button type="submit" value="update" name="submit" class="btn btn-primary"><i class="far fa-save"></i> Save</button>
                 <a href="AdminHome.php" class="btn btn-info"><i class="fas fa-home"></i> Back</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            </form>
 
         </div>
     </div>

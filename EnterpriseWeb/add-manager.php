@@ -117,7 +117,7 @@
                     $error = "<br>Can't add user, please try again";
                     } else {
                         $msg = "Added $username successfully!";
-                        header("Location:add-coordinator.php?successful");
+                        header("Location:AdminHome.php?successful");
                     }  
                 }else{
                     echo ' <div class="alert alert-danger alert-dismissible fade show ">
