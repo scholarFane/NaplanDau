@@ -14,6 +14,7 @@
 
 		$user_name = $row_user['username'];
 		$user_role = $row_user['user_role'];
+        $email = $row_user['user_email'];
                 if($user_role!='Manager'){
                         session_start();
                         session_destroy();
@@ -69,9 +70,8 @@ if (isset($_POST['selectTerm'])) {
         <div class="sidebar">
             <div class="text-center">
                 <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
-                <h2>Name: Tuz</h2>
-                <div>DOB: 11/1/2011</div>
-                <div>Email: tuz@email.com</div>
+                <h2><?php echo "Name: ", $user_name ?></h2>
+                <div><?php echo "Email: ", $email ?></div>
                 <div>Phone Number: 923874239</div>
                 <a href="logout.php">Log out</a>
             </div>

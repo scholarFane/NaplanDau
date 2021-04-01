@@ -18,7 +18,6 @@
                 <th>Document</th>
                 <th>Term</th>
                 <th>Comment</th>
-                <th>For publication</th>
             </tr>
         </thead>
         <tbody>
@@ -39,27 +38,6 @@
             <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
             <td><?php echo $term_id; ?></td>
             <td> <a href="StudentHome.php?submit-student=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
-            <td><form id="selected" action="selectedPost.php" method="POST">
-                    <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
-                    <input type="checkbox" name="checkSelected" v onclick="document.getElementById('selected').submit()"
-                      <?php 
-                    if($post_status=="1"){
-                        echo "checked";
-                    }
-                    ?>     
-                    >Selected
-                </form>
-                <form id="notselected" action="unselectPost.php" method="POST">
-                <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
-                <input type="checkbox" name="checkSelected" v onclick="document.getElementById('notselected').submit()"
-                         <?php 
-                    if($post_status=="0"){
-                        echo "checked";
-                    }
-                    ?>
-                >Not selected
-                </form>
-            </td>
           </tr>
           <?php } ?>
           

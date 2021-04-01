@@ -68,7 +68,6 @@
       <div class="text-center">
         <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
         <h2><?php echo"Name: ", $coordinator_name ?></h2>
-        <div>DOB: 11/1/2011</div>
         <div><?php echo"Email: ",$coordinator_email ?></div>
         <div><?php echo"faculty_id: ",$coordinator_faculty ?></div>
         <div>Phone Number: 923874239</div>
@@ -113,7 +112,7 @@
                 <td><?php echo $term_id; ?></td>
                 <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
                 <td><form id="selected" action="selectedPost.php" method="POST">
-                        <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
+                        <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
                         <input type="checkbox" name="checkSelected" v onclick="document.getElementById('selected').submit()"
                           <?php 
                         if($post_status=="1"){
@@ -123,7 +122,7 @@
                         >Selected
                     </form>
                     <form id="notselected" action="unselectPost.php" method="POST">
-                    <input type="hidden" name="postId" value="<?php echo $row_post['post_id'] ?>" />
+                    <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
                     <input type="checkbox" name="checkSelected" v onclick="document.getElementById('notselected').submit()"
                              <?php 
                         if($post_status=="0"){
