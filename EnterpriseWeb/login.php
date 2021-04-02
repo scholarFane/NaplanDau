@@ -1,6 +1,12 @@
 <?php
   session_start();
-  include 'DatabaseConfig/dbConfig.php';  
+  include 'DatabaseConfig/dbConfig.php';
+    function passwordToToken($password){
+    global $salt1;
+    global $salt2;
+    $token = hash ("ripemd128", "$salt1$password$salt2");
+    return $token;
+}  
 ?>
 
 <!DOCTYPE html>

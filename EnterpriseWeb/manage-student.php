@@ -21,7 +21,12 @@
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
-                
+    function passwordToToken($password){
+    global $salt1;
+    global $salt2;
+    $token = hash ("ripemd128", "$salt1$password$salt2");
+    return $token;
+    }               
     if (isset($_GET['user_id'])) {
         $user_id = $_GET['user_id'];
         //Load the current data to that batch
