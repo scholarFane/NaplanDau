@@ -56,7 +56,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Academy</a>
+            <a class="navbar-brand" href="AdminHome.php">Academy</a>
             <i class="fas fa-user-alt"></i>
         </div>
     </nav>

@@ -12,18 +12,17 @@
 		$run_user = mysqli_query($conn,$get_user);
 		$row_user = mysqli_fetch_array($run_user);
 
-		$admin_name = $row_user['username'];
-		$admin_role = $row_user['user_role'];
-                $admin_email = $row_user['user_email'];
-                if($admin_role!='Admin'){
+		$user_name = $row_user['username'];
+		$user_role = $row_user['user_role'];
+        $email = $row_user['user_email'];
+                if($user_role!='Guest'){
                         session_start();
                         session_destroy();
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
-
-	
-?>
+ ?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -33,7 +32,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin Page</title>
+    <title>Guest Page</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -43,6 +42,7 @@
     <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
         type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <!-- Custom styles for this template -->
     <link href="css/landing-page.css" rel="stylesheet">
@@ -55,88 +55,68 @@
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
-            <a class="navbar-brand" href="AdminHome.php">Academy</a>
+            <a class="navbar-brand" href="GuestHome.php">Academy</a>
             <i class="fas fa-user-alt"></i>
         </div>
     </nav>
 
     <!-- Content -->
     <div class="grid-container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="text-center">
                 <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
-                <h2><?php echo"Name: ", $admin_name ?></h2>
-                <div><?php echo"Email: ",$admin_email ?></div>
+                <h2><?php echo "Name: ", $user_name ?></h2>
+                <div><?php echo "Email: ", $email ?></div>
                 <div>Phone Number: 923874239</div>
+                <a href="logout.php">Log out</a>
             </div>
         </div>
-        <!-- Right Content -->
         <div class="content">
-            <h2>Add Student</h2>
-            <form action="add-student.php" method ="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="name">Username:</label>
-                    <input type="text" class="form-control" name="username" id="username">
-                </div>
-                <div class="form-group">
-                    <label for="faculty">Faculty:</label>
-                    <select class="form-control" id="faculty" name="faculty">
-                <?php
-                    $query = "SELECT * FROM faculty";
-                    $faculties = mysqli_query($conn,$query);
-                        while ($faculty= mysqli_fetch_array($faculties)) {
-                        $fId = $faculty['0'];
-                        $fName = $faculty['1'];
-                        echo "<option value='$fId'>$fName</option>";
-                    }
-                ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="dob">Password:</label>
-                    <input type="password" name="password" class="form-control"  id="password">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" class="form-control"  id="email">
-                </div>
-                <?php
-            if(isset($_POST['submit'])) {
-                $username = $_POST['username'];
-                $pass = $_POST['password'];
-                $email=$_POST['email'];
-                $fId=$_POST['faculty'];
-                $query="select * from user where username = '$username' ";
-                $checkdup = mysqli_query($conn, $query);
-                if (!$nodup = $checkdup->fetch_assoc()) {
-                    $token = passwordToToken($pass);
-                    $sql="INSERT INTO `user`(`faculty_id`, `username`,`password`, `user_role`,`user_email`) VALUES ( '$fId','$username', '$token','Student', '$email')";
-                    $result = mysqli_query($conn,$sql);
-                    if (!$result) {
-                    $error = "<br>Can't add user, please try again";
-                    } else {
-                        $msg = "Added $username successfully!";
-                        header("Location:AdminHome.php?successful");
-                    }  
-                }else{
-                    echo ' <div class="alert alert-danger alert-dismissible fade show ">
-                              <small><strong>Error!</strong> This user have already existed.</small>
-                              <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            </div>';
-                }
-            }
-                ?>
-                <button type="submit" value="add" name="submit" id="submit" class="btn btn-primary"><i class="far fa-save"></i> Save</button>
-                <a href="AdminHome.php" class="btn btn-info"><i class="fas fa-home"></i> Back</a>
-            </form>
+            <div class="content-stuff">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#submission">Submission</a>
+                    </li>
+                </ul>
 
-        </div>
-    </div>
-    </div>
-
-
-    <!-- Footer -->
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="submission" class="container tab-pane active"><br>
+                        <h2>Student Works:</h2>
+                        <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Student's ID</th>
+                                    <th>Image</th>
+                                    <th>File</th>
+                                    <th>Term ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+				                $get_post = "select * from post where selected='1' ";
+				                $run_post = mysqli_query($conn,$get_post);
+				                while($row_post = mysqli_fetch_array($run_post)){
+				                  $post_id = $row_post['post_id'];
+				                  $term_id=$row_post['term_id'];
+				                  $student_id = $row_post['user_id'];
+				                  $post_image = $row_post['post_image'];
+				                  $post_file = $row_post['post_file'];
+				                  $post_status = $row_post['selected'];
+				              ?>
+                                <tr>
+                                    <td><?php echo $student_id ?></td>
+                                    <td><?php echo "<img class='img-fluid' src='img/". $post_image . "' height='160' width='160'>" ?></td>
+                                    <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
+                                    <td><?php echo $term_id; ?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
     <footer class="footer bg-dark">
         <div class="container">
             <div class="row">
@@ -183,7 +163,8 @@
         </div>
     </footer>
 
-    <!-- Bootstrap core JavaScript -->
+
+    <!-- Footer -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

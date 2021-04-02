@@ -54,7 +54,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Academy</a>
+            <a class="navbar-brand" href="AdminHome.php">Academy</a>
             <i class="fas fa-user-alt"></i>
         </div>
     </nav>
@@ -108,8 +108,9 @@
                 $fId=$_POST['faculty'];
                 $query="select * from user where username = '$username' ";
                 $checkdup = mysqli_query($conn, $query);
-                if (!$nodup = $checkdup->fetch_assoc()) {          
-                    $sql="INSERT INTO `user`(`faculty_id`, `username`,`password`, `user_role`,`user_email`) VALUES ( '$fId','$username', '$pass','Coordinator', '$email')";
+                if (!$nodup = $checkdup->fetch_assoc()) { 
+                    $token = passwordToToken($pass);
+                    $sql="INSERT INTO `user`(`faculty_id`, `username`,`password`, `user_role`,`user_email`) VALUES ( '$fId','$username', '$token','Coordinator', '$email')";
                     $result = mysqli_query($conn,$sql);
                     if (!$result) {
                     $error = "<br>Can't add user, please try again";

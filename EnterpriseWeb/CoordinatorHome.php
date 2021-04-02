@@ -23,7 +23,22 @@
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
-
+    if (isset($_POST['checkSelected'])) {
+    $post_id=$_POST['postId'];
+    $query = "UPDATE post SET selected = '1' WHERE post_id = '$post_id'";
+    $prep = $conn->prepare($query);
+    $prep->execute();
+    header("Location: CoordinatorHome.php");
+    die("You've selected the post for publication <a href=' CoordinatorHome.php'>click here</a> to continue.");
+    }
+if (isset($_POST['checkNotSelected'])) {
+    $post_id=$_POST['postId'];
+    $query = "UPDATE post SET selected = '0' WHERE post_id = '$post_id'";
+    $prep = $conn->prepare($query);
+    $prep->execute();
+    header("Location: CoordinatorHome.php");
+    die("You've unselected the post for publication <a href=' CoordinatorHome.php'>click here</a> to continue.");
+    }
 	
  ?>
 <!DOCTYPE html>
@@ -57,7 +72,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Academy</a>
+        <a class="navbar-brand" href="CoordinatorHome.php">Academy</a>
       <i class="fas fa-user-alt"></i>
     </div>
   </nav>
@@ -112,7 +127,7 @@
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
                 <td><?php echo $term_id; ?></td>
                 <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
-                <td><form id="selected" action="selectedPost.php" method="POST">
+                <td><form id="selected" action="CoordinatorHome.php" method="POST">
                         <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
                         <input type="checkbox" name="checkSelected" onchange="this.form.submit()"
                           <?php 
@@ -122,9 +137,9 @@
                         ?>     
                         >Selected
                     </form>
-                    <form id="notselected" action="unselectPost.php" method="POST">
+                    <form id="notselected" action="CoordinatorHome.php" method="POST">
                     <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
-                    <input type="checkbox" name="checkSelected" onchange="this.form.submit()"
+                    <input type="checkbox" name="checkNotSelected" onchange="this.form.submit()"
                              <?php 
                         if($post_status=="0"){
                             echo "checked";

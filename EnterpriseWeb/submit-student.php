@@ -6,6 +6,7 @@
 
     <!-- Right Content -->
     <div class="content">
+        <a href="StudentHome.php?Student-Table" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
         <div class="content-stuff">
             <h2>View Your Submission:</h2>
             <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> Submission.txt </a>

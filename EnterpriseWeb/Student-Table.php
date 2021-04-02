@@ -8,6 +8,7 @@
   }else{
  ?>
 <div class="content">
+    <a href="StudentHome.php" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
   <div class="content-stuff">
     <div class="table-responsive">
     <table class="table table-striped table-hover">

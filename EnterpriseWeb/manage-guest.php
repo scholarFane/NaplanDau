@@ -41,10 +41,11 @@
         $newPass = $_POST['password'];
         $newEmail=$_POST['email'];
         $newFID=$_POST['faculty'];
+        $token = passwordToToken($newPass);
         $query="select * from user where username = '$newUsername'and user_email='$newEmail' ";
         $checkdup = mysqli_query($conn, $query);
             if (!$nodup = $checkdup->fetch_assoc()) {          
-                $sql = "UPDATE user SET faculty_id = '$newFID', username = '$newUsername', password = '$newPass' , user_email ='$newEmail' WHERE user_id = '$newUserId'";
+                $sql = "UPDATE user SET faculty_id = '$newFID', username = '$newUsername', password = '$token' , user_email ='$newEmail' WHERE user_id = '$newUserId'";
                 $result = mysqli_query($conn,$sql);
                 if (!$result) {
                 $error = "<br>Can't update user, please try again";
@@ -89,7 +90,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-light bg-light static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Academy</a>
+            <a class="navbar-brand" href="AdminHome.php">Academy</a>
             <i class="fas fa-user-alt"></i>
         </div>
     </nav>

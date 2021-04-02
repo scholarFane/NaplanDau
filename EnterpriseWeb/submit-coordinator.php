@@ -63,6 +63,7 @@
     <div class="container">
         <!-- Right Content -->
         <div class="content">
+            <a href="CoordinatorHome.php" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
             <div class="content-stuff">
                 <h2>Mark Submission:</h2>
                 <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> Submission.txt </a>
