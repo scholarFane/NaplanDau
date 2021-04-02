@@ -1,16 +1,18 @@
 .grid-container {
     display: grid;
     grid-template-columns: 1fr 5fr;
-    grid-template-rows: 600px;
+    grid-template-rows: 1fr;
     grid-template-areas: 
-    "sidebar content";
+    "sidebar content"
+    "footer footer";
 }
 
 @media (max-width: 700px)  {
     .grid-container {
         grid-template-areas:
         "sidebar"
-        "content";
+        "content"
+        "footer";
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
     }
@@ -34,6 +36,16 @@
 .content {
     grid-area: content;
     margin: 20px;
+    min-height: 600px;
+}
+
+.comment-group {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.footer {
+    grid-area: footer;
 }
 
 .avatar {

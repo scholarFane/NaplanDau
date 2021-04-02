@@ -267,7 +267,7 @@ if(isset($_POST['submit'])){
   <?php } ?>
   </div>
  
-
+ <?php include("Footer.php") ?>
 
 
   <!-- Bootstrap core JavaScript -->

@@ -81,7 +81,8 @@
      ?>
     <div class="content">
       <div class="content-stuff">
-        <h2>Student Works:</h2> 
+        <h2>Student Works:</h2>
+        <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="thead-dark">
                 <tr>
@@ -107,13 +108,13 @@
               ?>
               <tr>
                 <td><?php echo $student_id ?></td>
-                <td><?php echo "<img src='img/". $post_image . "' height='160' width='160'>" ?></td>
+                <td><?php echo "<img class='img-fluid' src='img/". $post_image . "' height='160' width='160'>" ?></td>
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
                 <td><?php echo $term_id; ?></td>
                 <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
                 <td><form id="selected" action="selectedPost.php" method="POST">
                         <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
-                        <input type="checkbox" name="checkSelected" v onclick="document.getElementById('selected').submit()"
+                        <input type="checkbox" name="checkSelected" onchange="this.form.submit()"
                           <?php 
                         if($post_status=="1"){
                             echo "checked";
@@ -123,7 +124,7 @@
                     </form>
                     <form id="notselected" action="unselectPost.php" method="POST">
                     <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
-                    <input type="checkbox" name="checkSelected" v onclick="document.getElementById('notselected').submit()"
+                    <input type="checkbox" name="checkSelected" onchange="this.form.submit()"
                              <?php 
                         if($post_status=="0"){
                             echo "checked";
@@ -137,6 +138,7 @@
               
             </tbody>
         </table>
+      </div>
       </div>
     </div>
   

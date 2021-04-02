@@ -92,6 +92,7 @@ if (isset($_POST['selectTerm'])) {
                 <div class="tab-content">
                     <div id="submission" class="container tab-pane active"><br>
                         <h2>Student Works:</h2>
+                        <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead class="thead-dark">
                                 <tr>
@@ -115,13 +116,14 @@ if (isset($_POST['selectTerm'])) {
 				              ?>
                                 <tr>
                                     <td><?php echo $student_id ?></td>
-                                    <td><?php echo "<img src='img/". $post_image . "' height='160' width='160'>" ?></td>
+                                    <td><?php echo "<img class='img-fluid' src='img/". $post_image . "' height='160' width='160'>" ?></td>
                                     <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
                                     <td><?php echo $term_id; ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                     <!-- Chart-->
                     <div id="stats" class="container tab-pane fade"><br>
@@ -348,6 +350,51 @@ if (isset($_POST['selectTerm'])) {
             }
         })
     </script>
+    <footer class="footer bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                    <ul class="list-inline mb-2">
+                        <li class="list-inline-item">
+                            <a href="#">About</a>
+                        </li>
+                        <li class="list-inline-item"> </li>
+                        <li class="list-inline-item">
+                            <a href="#">Contact</a>
+                        </li>
+                        <li class="list-inline-item"> </li>
+                        <li class="list-inline-item">
+                            <a href="#">Terms of Use</a>
+                        </li>
+                        <li class="list-inline-item"> </li>
+                        <li class="list-inline-item">
+                            <a href="#">Privacy Policy</a>
+                        </li>
+                    </ul>
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; All Rights Reserved.</p>
+                </div>
+                <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <i class="fab fa-instagram fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
     <!-- Footer -->
