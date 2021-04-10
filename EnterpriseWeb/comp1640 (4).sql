@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 06, 2021 lúc 10:36 AM
+-- Thời gian đã tạo: Th4 07, 2021 lúc 07:19 AM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 8.0.2
 
@@ -40,12 +40,8 @@ CREATE TABLE `comment` (
 --
 
 INSERT INTO `comment` (`comment_id`, `user_id`, `post_id`, `comment_content`, `time`) VALUES
-(4, 2, 37, 'aasss', '2021-03-06 15:41:05'),
-(5, 2, 37, '123', '2021-03-06 15:57:44'),
-(6, 2, 37, 'asdfasdf', '2021-03-06 16:00:46'),
-(7, 1, 37, 'a', '2021-03-06 16:15:37'),
-(9, 1, 37, 'hello\r\n', '2021-03-06 16:17:56'),
-(10, 2, 37, 'hello', '2021-03-06 16:18:30');
+(44, 1, 43, 'Can you check for me please', '2021-04-02 18:46:35'),
+(45, 2, 43, 'sure  i will check on Friday', '2021-04-02 19:20:46');
 
 -- --------------------------------------------------------
 
@@ -122,9 +118,9 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`post_id`, `user_id`, `term_id`, `faculty_id`, `post_image`, `post_file`, `post_content`, `submit_date`, `selected`) VALUES
-(36, 4, NULL, 2, '123845307_3694816403917483_7439521681766803848_n.p', 'NotificationSystemInPHP-master.zip', '', '2021-02-27 12:38:57', 0),
-(37, 1, NULL, 1, '123845307_3694816403917483_7439521681766803848_n.p', 'NotificationSystemInPHP-master.zip', '', '2021-02-27 14:10:17', 0),
-(38, 5, NULL, 2, 'MONSTER HUNTER_ WORLD(416251) 9_27_2020 7_05_18 PM', 'student coordinator.rar', '', '2021-02-27 14:25:49', 0);
+(43, 1, 4, 1, 'Logo_BTEC_FPT.png', 'Lecture10_conceptualizing.pdf', '', '2021-04-02 18:44:03', 1),
+(44, 4, 4, 2, 'DSC_6559.jpg', 'Lecture10_conceptualizing.pdf', '', '2021-04-01 09:29:46', 0),
+(45, 8, 4, 1, 'auction.PNG', 'Lecture10_conceptualizing.pdf', '', '2021-04-01 09:37:28', 1);
 
 -- --------------------------------------------------------
 
@@ -138,6 +134,13 @@ CREATE TABLE `term` (
   `term_description` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `term`
+--
+
+INSERT INTO `term` (`term_id`, `term_deadline`, `term_description`) VALUES
+(4, '2021-04-30 15:30:00', 'term 4');
+
 -- --------------------------------------------------------
 
 --
@@ -148,7 +151,7 @@ CREATE TABLE `user` (
   `user_id` int(11) NOT NULL,
   `faculty_id` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `user_role` varchar(20) NOT NULL,
   `user_email` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -158,11 +161,15 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `faculty_id`, `username`, `password`, `user_role`, `user_email`) VALUES
-(1, 1, 'DuyAnh', '123', 'Student', 'da200066@gmail.com'),
-(2, 1, 'Dung', '123', 'Coordinator', 'something@gmail.com'),
-(3, 3, 'Binh', '123', 'Manager', 'something@gmail.com'),
-(4, 2, 'Quang', '123', 'Student', 'something@gmail.com'),
-(5, 2, 'Long', '123', 'Coordinator', 'da200066@gmail.com');
+(1, 1, 'DuyAnh', '781f357c35df1fef3138f6d29670365a', 'Student', 'da200066@gmail.com'),
+(2, 1, 'Dung', '781f357c35df1fef3138f6d29670365a', 'Coordinator', 'something@gmail.com'),
+(3, 3, 'Binh', '781f357c35df1fef3138f6d29670365a', 'Manager', 'something@gmail.com'),
+(4, 2, 'Quang', '781f357c35df1fef3138f6d29670365a', 'Student', 'something@gmail.com'),
+(5, 2, 'Long', '781f357c35df1fef3138f6d29670365a', 'Coordinator', 'da200066@gmail.com'),
+(7, 2, 'Admin1', '781f357c35df1fef3138f6d29670365a', 'Admin', 'something@gmail.com'),
+(8, 2, 'VietQuoc', '781f357c35df1fef3138f6d29670365a', 'Student', 'somethingelse@gmail.com'),
+(9, 1, 'QuangLV', '781f357c35df1fef3138f6d29670365a', 'Student', 'something@gmail.com'),
+(11, 1, 'Guest1', '781f357c35df1fef3138f6d29670365a', 'Guest', 'da200066@gmail.com');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -212,7 +219,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT cho bảng `faculty`
@@ -224,19 +231,19 @@ ALTER TABLE `faculty`
 -- AUTO_INCREMENT cho bảng `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT cho bảng `term`
 --
 ALTER TABLE `term`
-  MODIFY `term_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `term_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
