@@ -97,10 +97,8 @@ if(isset($_POST['submit'])){
                     $ImagePath="img/$realImageFile";
                     move_uploaded_file($ImageTempLocation, $ImagePath);
                     $ImageClear=true;
-                    }
-                else{
-                     $ImageError= "<p>The file size is too big</p>";
-                     
+                    }else{
+                     $ImageError= "<p>The file size is too big</p>";  
                 }
             }else{
                 $ImageError="<p>There is an error</p>";
@@ -161,7 +159,7 @@ if(isset($_POST['submit'])){
     } 
     if($UpdateClear===true){
         $title='New post';
-        $message="Student".$student_name." have updated their post";
+        $message="Student".$student_name." have updated their post <br> You have 14 days to comment on their post";
         $query ="select * from user where faculty_id = '$student_faculty' and user_role='Coordinator'";
         $result = mysqli_query($conn,$query);
         foreach(fetchAll($query) as $i){

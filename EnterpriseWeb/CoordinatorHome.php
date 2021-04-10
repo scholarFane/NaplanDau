@@ -13,7 +13,7 @@
 		$row_coordinator = mysqli_fetch_array($run_coordinator);
 
 		$coordinator_name = $row_coordinator['username'];
-    $coordinator_id = $row_coordinator['user_id'];
+                $coordinator_id = $row_coordinator['user_id'];
 		$coordinator_role = $row_coordinator['user_role'];
 		$coordinator_email = $row_coordinator['user_email'];
                 $coordinator_faculty = $row_coordinator['faculty_id'];
@@ -39,6 +39,8 @@ if (isset($_POST['checkNotSelected'])) {
     header("Location: CoordinatorHome.php");
     die("You've unselected the post for publication <a href=' CoordinatorHome.php'>click here</a> to continue.");
     }
+            
+            
 	
  ?>
 <!DOCTYPE html>
@@ -106,6 +108,7 @@ if (isset($_POST['checkNotSelected'])) {
                     <th>Document</th>
                     <th>Term</th>
                     <th>Comment</th>
+                    <th>Commented??</th>
                     <th>For publication</th>
                 </tr>
             </thead>
@@ -120,6 +123,7 @@ if (isset($_POST['checkNotSelected'])) {
                   $post_image = $row_post['post_image'];
                   $post_file = $row_post['post_file'];
                   $post_status = $row_post['selected'];
+                  $post_time=$row_post['submit_date'];
               ?>
               <tr>
                 <td><?php echo $student_id ?></td>
@@ -127,6 +131,29 @@ if (isset($_POST['checkNotSelected'])) {
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
                 <td><?php echo $term_id; ?></td>
                 <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
+                <td>
+                    <?php
+                    $commented=null;
+                date_default_timezone_set("Asia/Ho_Chi_Minh");
+                $date_now=date("Y-m-d H:i:s");
+                $now= strtotime($date_now);
+                $submit_date= strtotime($post_time);
+                $gap=abs($submit_date - $now)/60/60/24;
+                    $check_comment = "select * from comment where post_id = '$post_id'and user_id='$coordinator_id' ";
+                            $run_check_comment = mysqli_query($conn,$check_comment);
+                            if(empty($row_check_comment = mysqli_fetch_array($run_check_comment))){
+                                if (floor($gap)>14){
+                                    $late=floor($gap)-14;
+                                    echo "No comment in ".floor($gap)." days (".$late." days late)";
+                                }elseif (floor($gap)<14){
+                                    $time_left=14-floor($gap);
+                                    echo "No comment in ".floor($gap)." days (".$time_left." days left)" ;
+                                }
+                            }else{
+                                echo "Yes";
+                            }
+                    ?>
+                </td>
                 <td><form id="selected" action="CoordinatorHome.php" method="POST">
                         <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
                         <input type="checkbox" name="checkSelected" onchange="this.form.submit()"

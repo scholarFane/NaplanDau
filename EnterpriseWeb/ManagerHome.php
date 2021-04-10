@@ -21,11 +21,64 @@
                         echo "<h1>Restricted area, please go back to the login page</h1>";
                         echo "<script>window.open('login.php','_self')</script>";
                 }
+    
 if (isset($_POST['selectTerm'])) {
-    $filterTerm=$_POST['termID'];
+    if(!empty($filterTerm)) {
+        $filterTerm=$_POST['selectTerm'];
+    }else{
+        $filterTerm=$tID;
+    }
+    $filterTerm=$_POST['selectTerm'];
     header("Location: ManagerHome.php#stats");
     die("Term filtered");
 }
+
+function zipFilesAndDownload($term_id)
+{
+    include("DatabaseConfig/dbConfig.php");
+    $file_names = array();
+    $get_file = "select * from post where term_id=$term_id";
+    $run_file = mysqli_query($conn,$get_file);
+	while($row_file = mysqli_fetch_array($run_file)){
+	$post_image = $row_file['post_image'];
+	$post_file = $row_file['post_file'];
+        array_push($file_names, $post_file);
+        array_push($file_names, $post_image);
+    }
+    $archive_file_name='Submission.zip';
+    $file_path='img/';
+        //echo $file_path;die;
+    $zip = new ZipArchive();
+    //create the file and throw the error if unsuccessful
+    if ($zip->open($archive_file_name, ZIPARCHIVE::CREATE )!==TRUE) {
+        exit("cannot open <$archive_file_name>\n");
+    }
+    //add each files of $file_name array to archive
+    foreach($file_names as $files)
+    {
+        $zip->addFile($file_path.$files,$files);
+        //echo $file_path.$files,$files."
+
+    }
+    $zip->close();
+    //then send the headers to force download the zip file
+    header("Content-type: application/zip"); 
+    header("Content-Disposition: attachment; filename=$archive_file_name");
+    header("Content-length: " . filesize($archive_file_name));
+    header("Pragma: no-cache"); 
+    header("Expires: 0");
+    ob_clean();
+	flush();
+    readfile("$archive_file_name");
+    unlink($archive_file_name);
+    exit;
+}
+if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['Download']))
+    {
+        $term_id=$_POST['selectDownloadTerm'];
+        zipFilesAndDownload($term_id);
+    }
+
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +94,7 @@ if (isset($_POST['selectTerm'])) {
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+    
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
@@ -52,6 +105,8 @@ if (isset($_POST['selectTerm'])) {
     <!-- Custom styles for this template -->
     <link href="css/landing-page.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    
+
 
 </head>
 
@@ -92,6 +147,21 @@ if (isset($_POST['selectTerm'])) {
                 <div class="tab-content">
                     <div id="submission" class="container tab-pane active"><br>
                         <h2>Student Works:</h2>
+                        <form action="ManagerHome.php" method="POST">
+                            <label for="selectDownloadTerm">Choose which term's posts you want to download:</label>
+                            <select name="selectDownloadTerm" id="selectTerm">
+                                <?php 
+                            $query = "SELECT * FROM term";
+                            $terms = mysqli_query($conn,$query);
+                        while ($term= mysqli_fetch_array($terms)) {
+                            $tId = $term['0'];
+                            echo "<option value='$tId' selected >$tId</option>";
+                        }   
+                                ?>
+                            </select>
+                        <input type="hidden" name="termID" value="<?php echo $tId; ?>">
+                        <button class="btn btn-outline-dark btn-sm" type="submit" name="Download"><i class="fas fa-download"></i>Download all</button>
+                        </form>
                         <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead class="thead-dark">
@@ -400,7 +470,6 @@ if (isset($_POST['selectTerm'])) {
     <!-- Footer -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

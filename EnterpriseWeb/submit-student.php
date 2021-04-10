@@ -1,6 +1,21 @@
 
 
+<?php
+                if(isset($_GET['submit-student'])){
+                    $post_id = $_GET['submit-student'];
+                    $get_post = "select * from post where post_id = '$post_id'";
+                    $run_post = mysqli_query($conn, $get_post);
+                    $row_post = mysqli_fetch_array($run_post);
 
+                    $p_id = $row_post['post_id'];
+                    $p_document = $row_post['post_file'];
+                    $p_user = $row_post['user_id'];
+                }
+                else
+                {
+                    echo"something wrong";
+                } 
+            ?>
 
 <body>
 
@@ -9,7 +24,7 @@
         <a href="StudentHome.php?Student-Table" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
         <div class="content-stuff">
             <h2>View Your Submission:</h2>
-            <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> Submission.txt </a>
+            <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> <?php echo $p_document; ?> </a>
             <br>
             <a href="StudentHome.php" class="btn btn-primary my-2"><i class="fas fa-upload"></i> Re-upload
                 Submission</a>
@@ -26,22 +41,7 @@
                 <button type="submit" value="submit-comment" name="submit-comment" id="submit-comment" class="btn btn-outline-primary my-2"><i class="fa fa-paper-plane"></i>
                     Submit</button>
                 </form>
-                <?php
-                if(isset($_GET['submit-student'])){
-                    $post_id = $_GET['submit-student'];
-                    $get_post = "select * from post where post_id = '$post_id'";
-                    $run_post = mysqli_query($conn, $get_post);
-                    $row_post = mysqli_fetch_array($run_post);
-
-                    $p_id = $row_post['post_id'];
-                    $p_document = $row_post['post_file'];
-                    $p_user = $row_post['user_id'];
-                }
-                else
-                {
-                    echo"something wrong";
-                } 
-            ?>
+                
                 <?php 
                     if(isset($_POST['submit-comment'])){
                         $comment = $_POST['comment'];

@@ -24,6 +24,38 @@
                         echo "<script>window.open('login.php','_self')</script>";
                 }
 
+        if(isset($_GET['submit-coordinator'])){
+                    $post_id = $_GET['submit-coordinator'];
+                    $get_post = "select * from post where post_id = '$post_id'";
+                    $run_post = mysqli_query($conn, $get_post);
+                    $row_post = mysqli_fetch_array($run_post);
+
+                    $p_id = $row_post['post_id'];
+                    $p_document = $row_post['post_file'];
+                    $p_user = $row_post['user_id'];
+                    $p_term=$row_post['term_id'];
+                    $p_time=$row_post['submit_date'];
+                    }else{
+                        echo"something wrong";
+                    }
+                $get_term = "select * from term where term_id=$p_term";
+                $run_term = mysqli_query($conn,$get_term);
+                while($term_row = mysqli_fetch_array($run_term)){
+                    $term_deadline = $term_row['term_deadline'];
+                }
+            $deadline= date('Y-m-d H:i:s', strtotime($term_deadline));
+            $deadlineMsg="";
+            $commented=null;
+            date_default_timezone_set("Asia/Ho_Chi_Minh");
+            $date_now=date("Y-m-d H:i:s");
+            $comment_date = date('Y-m-d H:i:s', strtotime($p_time . ' +14 day'));
+            $check_comment = "select * from comment where post_id = '$post_id' ";
+                            $run_check_comment = mysqli_query($conn,$check_comment);
+                            if(empty($row_check_comment = mysqli_fetch_array($run_check_comment))){
+                                $commented=false;
+                            }else{
+                                $commented=true;
+                            }
     
  ?>
 
@@ -66,7 +98,7 @@
             <a href="CoordinatorHome.php" class="btn btn-info"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
             <div class="content-stuff">
                 <h2>Mark Submission:</h2>
-                <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> Submission.txt </a>
+                <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> <?php echo $p_document; ?> </a>
                 <div class="form-group my-2">
                     <input type="grade" class="form-control" placeholder="Current Grade: 0/100">
                 </div>
@@ -80,27 +112,21 @@
             <div class="comment-section">
                 <h2>Comment Section:</h2>
                 <div class="form-group">
+                    <?php
+                        if($date_now<$comment_date && $commented==false){ 
+                            $deadlineMsg="<p>You have missed the deadline :".$comment_date."</p>";
+                        }elseif($date_now>$deadline){
+                            $deadlineMsg="<p>You have missed the deadline :".$deadline."</p>";
+                        }else{
+                    ?>
                     <form method="post">
                     <textarea name="comment" class="form-control" placeholder="Leave your comment here..." rows="3"></textarea>
                     <button type="submit" value="submit" name="submit" id="submit" class="btn btn-outline-primary my-2"><i class="fa fa-paper-plane"></i>
                         Submit</button>
                     </form>
-                    <?php
-                    if(isset($_GET['submit-coordinator'])){
-                        $post_id = $_GET['submit-coordinator'];
-                        $get_post = "select * from post where post_id = '$post_id'";
-                        $run_post = mysqli_query($conn, $get_post);
-                        $row_post = mysqli_fetch_array($run_post);
-
-                        $p_id = $row_post['post_id'];
-                        $p_document = $row_post['post_file'];
-                        $p_user = $row_post['user_id'];
-                    }
-                    else
-                    {
-                        echo"something wrong";
-                    } 
-                ?>
+                    <?php 
+                     }
+                    echo $deadlineMsg;?>
                     <?php 
                         if(isset($_POST['submit'])){
                             $comment = $_POST['comment'];
