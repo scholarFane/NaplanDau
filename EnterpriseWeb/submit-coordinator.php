@@ -99,13 +99,7 @@
             <div class="content-stuff">
                 <h2>Mark Submission:</h2>
                 <a href="" style="font-size: 1.2rem;"><i class="far fa-file-alt"></i> <?php echo $p_document; ?> </a>
-                <div class="form-group my-2">
-                    <input type="grade" class="form-control" placeholder="Current Grade: 0/100">
-                </div>
-                <button type="button" class="btn btn-primary my-1"><i class="fas fa-upload"></i> Upload
-                    Grade</button>
-                <a href="submit-student.html" class="btn btn-danger my-1 ml-1"><i class="far fa-trash-alt"></i> Remove
-                    Grade</a>
+            
             </div>
             <hr>
             <!-- Comment Section -->
@@ -139,7 +133,7 @@
                     ?>
                     <div class="card">
                         
-                        <div class="card-header comment-group">Recent Comments</div>
+                        <div class="card-header">Recent Comments</div>
 
                         <?php 
                             $get_comment = "select * from comment where post_id = '$post_id' ";

@@ -53,7 +53,7 @@
                 <div class="card">
                     
                     <div class="card-header">Recent Comments</div>
-                    <div class="comment-group">
+                    <div >
                     <?php 
                         $get_comment = "select * from comment where post_id = '$post_id' ";
                         $run_comment = mysqli_query($conn,$get_comment);

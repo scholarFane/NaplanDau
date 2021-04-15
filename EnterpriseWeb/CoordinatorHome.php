@@ -87,7 +87,7 @@ if (isset($_POST['checkNotSelected'])) {
         <h2><?php echo"Name: ", $coordinator_name ?></h2>
         <div><?php echo"Email: ",$coordinator_email ?></div>
         <div><?php echo"faculty_id: ",$coordinator_faculty ?></div>
-        <div>Phone Number: 923874239</div>
+        
         <a href="logout.php">Log out</a>
       </div>
     </div>
@@ -108,7 +108,7 @@ if (isset($_POST['checkNotSelected'])) {
                     <th>Document</th>
                     <th>Term</th>
                     <th>Comment</th>
-                    <th>Commented??</th>
+                    
                     <th>For publication</th>
                 </tr>
             </thead>
@@ -130,9 +130,8 @@ if (isset($_POST['checkNotSelected'])) {
                 <td><?php echo "<img class='img-fluid' src='img/". $post_image . "' height='160' width='160'>" ?></td>
                 <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
                 <td><?php echo $term_id; ?></td>
-                <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
-                <td>
-                    <?php
+                <td> <a href="CoordinatorHome.php?submit-coordinator=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a>
+                  <?php
                     $commented=null;
                 date_default_timezone_set("Asia/Ho_Chi_Minh");
                 $date_now=date("Y-m-d H:i:s");
@@ -154,6 +153,7 @@ if (isset($_POST['checkNotSelected'])) {
                             }
                     ?>
                 </td>
+               
                 <td><form id="selected" action="CoordinatorHome.php" method="POST">
                         <input type="hidden" name="postId" value="<?php echo $post_id ?>" />
                         <input type="checkbox" name="checkSelected" onchange="this.form.submit()"

@@ -211,11 +211,11 @@ if(isset($_POST['submit'])){
       <div class="text-center">
         <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
         <h2><?php echo"Name: ",$student_name ?></h2>
-        <div>DOB: 11/1/2011</div>
+        
         <div><?php echo"Email: ", $student_email ?></div>
-        <div><?php echo $id  ?></div>
+        <div><?php echo"Student ID: ", $id  ?></div>
         <div><?php echo"Faculty ID : ", $student_faculty  ?></div>
-        <div>Phone Number: 923874239</div>
+        
         <a href="logout.php">Log out</a>
       </div>
     </div>

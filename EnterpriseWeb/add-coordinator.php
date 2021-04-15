@@ -72,7 +72,7 @@ function passwordToToken($password){
                 <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
                 <h2><?php echo"Name: ", $admin_name ?></h2>
                 <div><?php echo"Email: ",$admin_email ?></div>
-                <div>Phone Number: 923874239</div>
+                >
             </div>
         </div>
         <!-- Right Content -->

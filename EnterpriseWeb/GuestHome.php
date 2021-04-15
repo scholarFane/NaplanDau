@@ -67,7 +67,7 @@
                 <img src="img/avatar.png" class="rounded avatar mx-auto img-fluid" alt="...">
                 <h2><?php echo "Name: ", $user_name ?></h2>
                 <div><?php echo "Email: ", $email ?></div>
-                <div>Phone Number: 923874239</div>
+                
                 <a href="logout.php">Log out</a>
             </div>
         </div>
