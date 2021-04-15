@@ -105,7 +105,7 @@
                                     <th>Student Name</th>
                                     <th>Faculty</th>
                                     <th>Email</th>
-                                    <th>Edit post</th>
+                                    <th>Edit </th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>

@@ -19,6 +19,7 @@
                 <th>Document</th>
                 <th>Term</th>
                 <th>Comment</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,12 @@
             <td><?php echo "<a href='img/".$post_file." 'target='_blank'>".$post_file."</a>" ?></td>
             <td><?php echo $term_id; ?></td>
             <td> <a href="StudentHome.php?submit-student=<?php echo $post_id; ?>" class="btn btn-outline-dark btn-sm"><i class="fas fa-edit"></i></a></td>
+            <td><?php if ($post_status=='1') {
+              echo"<p>Selected</p>";
+            }
+            else{
+              echo"<p>Not Selected</p>";
+            } ?></td>
           </tr>
           <?php } ?>
           
